@@ -360,7 +360,7 @@ const LearningSession: React.FC<LearningSessionProps> = ({ period, onComplete, o
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => setCurrentStep(currentStep + 1)}
+              onClick={() => setCurrentStep(currentStep + 1523)}
               className="px-6 py-2 bg-blue-500 text-white rounded-lg flex items-center space-x-2"
             >
               <span>Tiếp tục</span>
