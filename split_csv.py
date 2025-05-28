@@ -3,7 +3,7 @@ import os
 
 # List of input CSV file paths
 input_files = [
-    '/home/gad/My Study/Workspace/Code Storages/University/HK6/CS313/Final Project/ViHistoryApp/rag_legal_chatbot_frontend/src/data/Lịch sử Việt Nam Dataset - Giai đoạn 40-938csv',
+    '/home/gad/My Study/Workspace/Code Storages/University/HK6/CS313/Final Project/ViHistoryApp/rag_legal_chatbot_frontend/src/data/Lịch sử Việt Nam Dataset - Giai đoạn 40-938.csv',
     '/home/gad/My Study/Workspace/Code Storages/University/HK6/CS313/Final Project/ViHistoryApp/rag_legal_chatbot_frontend/src/data/Lịch sử Việt Nam Dataset - Giai đoạn 938-1858.csv',
     '/home/gad/My Study/Workspace/Code Storages/University/HK6/CS313/Final Project/ViHistoryApp/rag_legal_chatbot_frontend/src/data/Lịch sử Việt Nam Dataset - Giai đoạn 1858-1945.csv',
     '/home/gad/My Study/Workspace/Code Storages/University/HK6/CS313/Final Project/ViHistoryApp/rag_legal_chatbot_frontend/src/data/Lịch sử Việt Nam Dataset - Giai đoạn 1945-1954.csv',

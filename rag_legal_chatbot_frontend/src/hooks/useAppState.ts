@@ -23,21 +23,21 @@ export interface Achievement {
   rarity: 'common' | 'rare' | 'epic' | 'legendary';
 }
 
-export interface Collection {
-  id: string;
-  title: string;
-  items: CollectionItem[];
-  progress: number;
-}
+// export interface Collection {
+//   id: string;
+//   title: string;
+//   items: CollectionItem[];
+//   progress: number;
+// }
 
-export interface CollectionItem {
-  id: string;
-  name: string;
-  description: string;
-  image: string;
-  obtainedAt: string;
-  rarity: 'common' | 'rare' | 'epic' | 'legendary';
-}
+// export interface CollectionItem {
+//   id: string;
+//   name: string;
+//   description: string;
+//   image: string;
+//   obtainedAt: string;
+//   rarity: 'common' | 'rare' | 'epic' | 'legendary';
+// }
 
 export interface AppState {
   user: User;

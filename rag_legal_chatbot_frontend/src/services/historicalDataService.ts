@@ -31,6 +31,7 @@ export interface HistoricalPeriod {
 
 // Assuming chunks are available at this path relative to the application root
 const CHUNKS_BASE_PATH = '/data/chunks/';
+const ERAS_DATA_PATH = '/data/eras.json';
 
 export class HistoricalDataService {
   private static instance: HistoricalDataService;
@@ -54,6 +55,95 @@ export class HistoricalDataService {
     return HistoricalDataService.instance;
   }
 
+  private async loadEras(): Promise<void> {
+    try {
+      const response = await fetch(ERAS_DATA_PATH);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch eras: ${response.statusText}`);
+      }
+      const erasData = await response.json();
+      this.eras = erasData.map((era: any) => ({
+        ...era,
+        periods: [], // Initialize periods array
+        unlocked: era.unlocked !== undefined ? era.unlocked : true,
+        completed: era.completed !== undefined ? era.completed : false,
+        // Ensure other optional properties from HistoricalEra type are handled if needed
+      }));
+      // Sort eras by start year to ensure consistent order
+      this.eras.sort((a, b) => a.startYear - b.startYear);
+      console.log('HistoricalDataService: Loaded and sorted eras:', this.eras.length);
+    } catch (error) {
+      console.error('HistoricalDataService: Error loading eras.json:', error);
+      this.eras = [];
+      throw error;
+    }
+  }
+
+  private associatePeriodsToEras(): void {
+    if (!this.eras.length || !this.periods.length) {
+      console.warn('HistoricalDataService: Cannot associate periods to eras. Eras or periods list is empty.');
+      return;
+    }
+
+    // Reset periods in eras
+    this.eras.forEach(era => {
+      era.periods = [];
+    });
+
+    const assignedPeriodIds = new Set<string>();
+
+    // Iterate through periods and assign each to the first appropriate era
+    this.periods.forEach(period => {
+      if (assignedPeriodIds.has(period.id)) {
+        return; // Skip if period already assigned (should not happen with break logic)
+      }
+      for (let i = 0; i < this.eras.length; i++) {
+        const era = this.eras[i];
+        const isLastEra = (i === this.eras.length - 1);
+
+        let periodBelongsToThisEra = false;
+
+        if (isLastEra) {
+          // For the last era, period must be fully within [start, end_inclusive]
+          if (period.startYear >= era.startYear && period.endYear <= era.endYear) {
+            periodBelongsToThisEra = true;
+          }
+        } else {
+          // For other eras, period starts in [start, end_exclusive_for_period_start_comparison)
+          // and period must end by or at the era's defined end.
+          // This handles the case where an era's endYear is the next era's startYear.
+          // A period starting exactly on such a boundary belongs to the next era.
+          if (period.startYear >= era.startYear && period.startYear < era.endYear && period.endYear <= era.endYear) {
+            periodBelongsToThisEra = true;
+          }
+        }
+        
+        // A special case for a period that exactly matches an era's boundary year, e.g. period 938-938.
+        // If period.startYear == era.endYear (and period.startYear == nextEra.startYear), it should go to the next era.
+        // The logic `period.startYear < era.endYear` correctly pushes such periods to the next era's check.
+        // e.g. Era1 (40-938), Era2 (938-1853). Period (938-938).
+        // For Era1: `period.startYear (938) < era.endYear (938)` is false. Period (938-938) not in Era1 by this rule.
+        // For Era2 (assuming not last): `period.startYear (938) >= era2.startYear (938)` (T) AND
+        // `period.startYear (938) < era2.endYear (1853)` (T) AND `period.endYear (938) <= era2.endYear (1853)` (T).
+        // So Period (938-938) correctly goes to Era2.
+
+        if (periodBelongsToThisEra) {
+          era.periods.push(period);
+          assignedPeriodIds.add(period.id);
+          break; // Period assigned to this era, move to next period
+        }
+      }
+    });
+
+    console.log('HistoricalDataService: Associated periods with eras.');
+    this.eras.forEach(era => {
+      if (era.periods.length > 0) {
+        console.log(`HistoricalDataService: Era "${era.name}" contains ${era.periods.length} periods: ${era.periods.map(p => p.name).join(', ')}`);
+      }
+    });
+  }
+
+
   async loadData(): Promise<void> {
     if (this.isLoaded) return;
     if (this.isLoading) return;
@@ -64,6 +154,8 @@ export class HistoricalDataService {
     console.log('HistoricalDataService: Starting data load from chunks...');
 
     try {
+      await this.loadEras(); // Load eras first
+
       const chunkFiles = await this.listChunkFiles();
       console.log('HistoricalDataService: Found chunk files:', chunkFiles);
 
@@ -77,15 +169,22 @@ export class HistoricalDataService {
 
       this.periods = this.groupEventsIntoPeriods(allEvents);
       console.log('HistoricalDataService: Grouped events into periods. Number of periods:', this.periods.length);
-      console.log('HistoricalDataService: Created periods data:', this.periods);
+      // console.log('HistoricalDataService: Created periods data:', this.periods); // Log can be very verbose
+
+      this.associatePeriodsToEras(); // Associate loaded periods with loaded eras
 
       this.loadChallenges();
       this.loadAchievements();
       this.isLoaded = true;
 
     } catch (error: any) {
-      console.error('HistoricalDataService: Error loading historical data chunks:', error);
-      this.error = 'Không thể tải dữ liệu lịch sử từ các file chunk.';
+      console.error('HistoricalDataService: Error loading historical data:', error);
+      this.error = 'Không thể tải dữ liệu lịch sử.';
+      if (error.message.includes('fetch eras')) {
+          this.error = 'Không thể tải dữ liệu Thời Đại. Vui lòng kiểm tra file /data/eras.json.';
+      } else if (error.message.includes('fetch chunk')) {
+          this.error = 'Không thể tải dữ liệu lịch sử từ các file chunk.';
+      }
     } finally {
       this.isLoading = false;
       console.log('HistoricalDataService: Finished data load.');
@@ -131,6 +230,8 @@ export class HistoricalDataService {
       `${CHUNKS_BASE_PATH}chunk_0028.csv`,
       `${CHUNKS_BASE_PATH}chunk_0029.csv`,
       `${CHUNKS_BASE_PATH}chunk_0030.csv`,
+      `${CHUNKS_BASE_PATH}chunk_0031.csv`,
+      `${CHUNKS_BASE_PATH}chunk_0032.csv`,
 
       // Add more files if your script created more chunks
     ];
@@ -162,7 +263,7 @@ export class HistoricalDataService {
       const events: HistoricalEvent[] = [];
       
       // Add log here to inspect parsed data structure and values
-      console.log('HistoricalDataService: Parsed data from Papaparse:', parsedData.data);
+      // console.log('HistoricalDataService: Parsed data from Papaparse:', parsedData.data); // Can be very verbose
 
       // Filter out rows that don't have essential data after parsing
       parsedData.data.forEach((rowData: any, index) => {
@@ -197,7 +298,7 @@ export class HistoricalDataService {
           });
       });
 
-      console.log(`HistoricalDataService: Successfully parsed ${events.length} valid events from ${filePath} using Papaparse.`);
+      // console.log(`HistoricalDataService: Successfully parsed ${events.length} valid events from ${filePath} using Papaparse.`); // Can be verbose
       return events;
     } catch (error) {
       console.error(`HistoricalDataService: Error loading or parsing chunk ${filePath}:`, error);
@@ -218,32 +319,54 @@ export class HistoricalDataService {
       const periodId = event.period.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''); // Sanitize period ID
 
       if (!periodsMap[periodId]) {
-        periodsMap[periodId] = {
-          id: periodId,
-          name: event.period, // Use original period name from event
-          startYear: event.year || 0,
-          endYear: event.year || 0,
-          description: event.description || '', // Use description from event if available
-          events: [],
-          difficulty: 'medium', // Default difficulty
-          unlocked: true,
-          rewards: {
-            experience: 100,
-            coins: 50
+          let initialStartYear = event.year !== undefined && event.year !== null ? event.year : 0;
+          let initialEndYear = event.year !== undefined && event.year !== null ? event.year : 0;
+          let descriptionFromEvent = event.description || '';
+
+          const yearPattern = /(\d+).*?(\d+)/; // Using \d{4} for 4-digit years
+          const match = periodId.match(yearPattern);
+
+          if (match && match.length >= 3) {
+            const year1 = parseInt(match[1], 10);
+            const year2 = parseInt(match[2], 10);
+
+            // Assign the smaller as startYear and larger as endYear
+            initialStartYear = Math.min(year1, year2);
+            initialEndYear = Math.max(year1, year2);
+            
+            console.log(`HistoricalDataService: Parsed years from periodId "${periodId}": Start: ${initialStartYear}, End: ${initialEndYear}`);
+            
+          } else {
+            console.log(`HistoricalDataService: Could not parse years from periodId "${periodId}". Using event.year: ${event.year}`);
           }
-        };
-        console.log(`HistoricalDataService: Created new period entry for ID: ${periodId} (Name: ${event.period})`);
-      }
-      // Update start and end years if event year is available
-      if (event.year !== undefined && event.year !== null) {
-        if (periodsMap[periodId].startYear === 0 || event.year < periodsMap[periodId].startYear) {
-          periodsMap[periodId].startYear = event.year;
+          periodsMap[periodId] = {
+            id: periodId,
+            name: event.period, 
+            startYear: initialStartYear,
+            endYear: initialEndYear,
+            description: descriptionFromEvent,
+            events: [],
+            difficulty: 'medium', 
+            unlocked: true,
+            rewards: {
+              experience: 100,
+              coins: 50
+            }
+          };
+          console.log(`HistoricalDataService: Created new period entry for ID: ${periodId} (Name: ${event.period}), Initial Years: ${periodsMap[periodId].startYear}-${periodsMap[periodId].endYear}`);
         }
-        if (periodsMap[periodId].endYear === 0 || event.year > periodsMap[periodId].endYear) {
-          periodsMap[periodId].endYear = event.year;
-        }
-      }
-      periodsMap[periodId].events.push(event);
+
+        // Update start and end years if event year is available AND it expands the current range
+        // if (event.year !== undefined && event.year !== null) {
+        //   // Handle initial 0 values or expand the range
+        //   if (periodsMap[periodId].startYear === 0 || event.year < periodsMap[periodId].startYear) {
+        //     periodsMap[periodId].startYear = event.year;
+        //   }
+        //   if (periodsMap[periodId].endYear === 0 || event.year > periodsMap[periodId].endYear) {
+        //     periodsMap[periodId].endYear = event.year;
+        //   }
+        // }
+        periodsMap[periodId].events.push(event);
     });
 
     // Convert map to array and sort
@@ -463,12 +586,17 @@ export class HistoricalDataService {
 
   // Getters
   getEras(): HistoricalEra[] {
-    // If you implement eras based on periods, generate them here
-    return []; // Placeholder
+    return this.eras;
   }
 
   getPeriods(): HistoricalPeriod[] {
+    // This now returns all periods loaded, not specific to an era unless filtered elsewhere
     return this.periods;
+  }
+  
+  getPeriodsByEraId(eraId: string): HistoricalPeriod[] {
+    const era = this.getEraById(eraId);
+    return era ? era.periods : [];
   }
 
   getContents(): HistoricalContent[] {
@@ -477,8 +605,7 @@ export class HistoricalDataService {
   }
 
   getEraById(id: string): HistoricalEra | undefined {
-    // If you implement eras, find them here
-    return undefined; // Placeholder
+    return this.eras.find(era => era.id === id);
   }
 
   getPeriodById(id: string): HistoricalPeriod | undefined {
@@ -555,15 +682,12 @@ export class HistoricalDataService {
           try {
               // In a real application, you'd identify which chunks belong to this period.
               // For this example, we'll re-filter all loaded events.
-              if (!this.isLoaded) {
-                 // This case should ideally not happen if loadData() is awaited, but as a safeguard:
+              if (!this.isLoaded) { // Should not happen if loadData() is awaited.
                  console.warn("Data not fully loaded when trying to get period events.");
-                 return undefined; // Cannot proceed without loaded data
+                 return undefined; 
               }
 
-              // Re-loading and filtering all events to get the ones for this period.
-              // A more efficient way would be to load only relevant chunks.
-              const chunkFiles = await this.listChunkFiles(); // Get all chunk files again
+              const chunkFiles = await this.listChunkFiles(); 
               const allEvents: HistoricalEvent[] = [];
               for (const file of chunkFiles) {
                  const chunkEvents = await this.loadEventsFromChunk(file);
@@ -571,7 +695,12 @@ export class HistoricalDataService {
               }
 
               // Filter events that belong to the target period
-              targetPeriod.events = allEvents.filter(event => event.period.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '') === periodId);
+              // The period name used in events should match the period name used to create period ID
+              targetPeriod.events = allEvents.filter(event => {
+                const eventPeriodId = event.period.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+                return eventPeriodId === periodId;
+              });
+
 
               console.log(`Loaded ${targetPeriod.events.length} events for period ${periodId}.`);
 
@@ -586,7 +715,6 @@ export class HistoricalDataService {
 
   // Keep getEventsByPeriod for compatibility if needed, but getPeriodWithEvents is preferred for loading.
   getEventsByPeriod(periodId: string): HistoricalEvent[] {
-     // This will only return events if they were already loaded by getPeriodWithEvents or loadData (if all events were loaded initially)
      const period = this.periods.find(p => p.id === periodId);
      return period ? period.events : [];
   }

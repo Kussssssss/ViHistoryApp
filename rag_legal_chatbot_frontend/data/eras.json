@@ -1,0 +1,56 @@
+[
+  {
+    "id": "era-40-938",
+    "name": "Thời kỳ Bắc thuộc và Chống Bắc thuộc (40 - 938)",
+    "startYear": 40,
+    "endYear": 938,
+    "description": "Giai đoạn lịch sử kéo dài hơn một thiên niên kỷ, Việt Nam đối mặt với các thế lực đô hộ từ phương Bắc và không ngừng đấu tranh giành độc lập, khẳng định chủ quyền dân tộc.",
+    "unlocked": true,
+    "completed": false
+  },
+  {
+    "id": "era-938-1858",
+    "name": "Thời kỳ Độc lập Tự chủ (938 - 1858)",
+    "startYear": 938,
+    "endYear": 1858,
+    "description": "Sau chiến thắng Bạch Đằng năm 938, Việt Nam bước vào kỷ nguyên độc lập, xây dựng và phát triển các triều đại phong kiến tự chủ, đạt nhiều thành tựu rực rỡ.",
+    "unlocked": true,
+    "completed": false
+  },
+  {
+    "id": "era-1858-1945",
+    "name": "Thời kỳ Pháp thuộc (1858 - 1945)",
+    "startYear": 1858,
+    "endYear": 1945,
+    "description": "Giai đoạn đất nước rơi vào ách đô hộ của thực dân Pháp, các phong trào yêu nước và cách mạng nổ ra mạnh mẽ, chuẩn bị cho cuộc đấu tranh giành độc lập.",
+    "unlocked": true,
+    "completed": false
+  },
+  {
+    "id": "era-1945-1954",
+    "name": "Kháng chiến chống Pháp (1945 - 1954)",
+    "startYear": 1945,
+    "endYear": 1954,
+    "description": "Sau Cách mạng Tháng Tám, dân tộc Việt Nam tiến hành cuộc kháng chiến trường kỳ chống thực dân Pháp xâm lược lần thứ hai, kết thúc bằng chiến thắng Điện Biên Phủ.",
+    "unlocked": true,
+    "completed": false
+  },
+  {
+    "id": "era-1954-1975",
+    "name": "Kháng chiến chống Mỹ, thống nhất đất nước (1954 - 1975)",
+    "startYear": 1954,
+    "endYear": 1975,
+    "description": "Đất nước tạm thời chia cắt, miền Bắc xây dựng chủ nghĩa xã hội, miền Nam đấu tranh chống đế quốc Mỹ và chính quyền Sài Gòn, tiến tới thống nhất non sông.",
+    "unlocked": true,
+    "completed": false
+  },
+  {
+    "id": "era-1975-2000",
+    "name": "Thời kỳ Xây dựng và Đổi mới (1975 - 2000)",
+    "startYear": 1975,
+    "endYear": 2000,
+    "description": "Sau thống nhất, Việt Nam bước vào giai đoạn hàn gắn vết thương chiến tranh, xây dựng đất nước và thực hiện công cuộc Đổi mới toàn diện từ năm 1986.",
+    "unlocked": true,
+    "completed": false
+  }
+]
