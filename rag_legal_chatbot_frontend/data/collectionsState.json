@@ -235,6 +235,20 @@
         "rarity": "legendary"
       },
       {
+        "id": "figure-ba-trieu",
+        "name": "Bà Triệu (226-248)",
+        "description": "Nữ anh hùng dân tộc, còn gọi là Triệu Thị Trinh, lãnh đạo cuộc khởi nghĩa chống quân Đông Ngô thế kỷ thứ 3. Nổi tiếng với câu nói: 'Tôi muốn cưỡi cơn gió mạnh, đạp luồng sóng dữ, chém cá kình ở biển Đông, đánh đuổi quân Ngô, giành lại giang sơn, cởi ách nô lệ, chứ không chịu khom lưng làm tì thiếp cho người!'",
+        "image": "/images/figures/ba-trieu.jpg",
+        "rarity": "epic"
+      },
+      {
+        "id": "figure-ly-nam-de",
+        "name": "Lý Nam Đế (Lý Bí, 503-548)",
+        "description": "Người lãnh đạo cuộc khởi nghĩa chống quân Lương, sáng lập nhà Tiền Lý và nước Vạn Xuân, xưng đế năm 544, khẳng định ý chí độc lập tự chủ của dân tộc.",
+        "image": "/images/figures/ly-nam-de.jpg",
+        "rarity": "epic"
+      },
+      {
         "id": "figure-ngo-quyen",
         "name": "Ngô Quyền (898-944)",
         "description": "Anh hùng dân tộc, người đã lãnh đạo nhân dân đánh tan quân Nam Hán trong trận Bạch Đằng năm 938, chấm dứt hơn 1000 năm Bắc thuộc, mở ra kỷ nguyên độc lập.",
@@ -249,10 +263,31 @@
         "rarity": "rare"
       },
       {
+        "id": "figure-le-hoan",
+        "name": "Lê Hoàn (Lê Đại Hành, 941-1005)",
+        "description": "Vị vua sáng lập nhà Tiền Lê, người có công lãnh đạo quân dân Đại Cồ Việt đánh tan quân Tống xâm lược năm 981, giữ vững nền độc lập dân tộc.",
+        "image": "/images/figures/le-hoan.jpg",
+        "rarity": "rare"
+      },
+      {
+        "id": "figure-ly-thai-to",
+        "name": "Lý Thái Tổ (Lý Công Uẩn, 974-1028)",
+        "description": "Vị vua sáng lập triều Lý, người có công dời đô từ Hoa Lư về Đại La và đặt tên là Thăng Long (nay là Hà Nội) vào năm 1010 với Chiếu dời đô lịch sử, mở ra một thời kỳ phát triển thịnh vượng của Đại Việt.",
+        "image": "/images/figures/ly-thai-to.jpg",
+        "rarity": "epic"
+      },
+      {
         "id": "figure-ly-thuong-kiet",
         "name": "Lý Thường Kiệt (1019-1105)",
         "description": "Nhà quân sự, nhà chính trị kiệt xuất thời nhà Lý. Người chỉ huy cuộc kháng chiến chống Tống (1075-1077) thắng lợi, tác giả bài thơ \"Nam quốc sơn hà\".",
         "image": "/images/figures/ly-thuong-kiet.jpg",
+        "rarity": "legendary"
+      },
+      {
+        "id": "figure-tran-nhan-tong",
+        "name": "Trần Nhân Tông (1258-1308)",
+        "description": "Vị vua anh minh nhà Trần, hai lần lãnh đạo quân dân Đại Việt kháng chiến chống quân Mông-Nguyên thắng lợi. Sau khi nhường ngôi, ông xuất gia tu hành, sáng lập Thiền phái Trúc Lâm Yên Tử.",
+        "image": "/images/figures/tran-nhan-tong.jpg",
         "rarity": "legendary"
       },
       {
@@ -263,9 +298,16 @@
         "rarity": "legendary"
       },
       {
+        "id": "figure-chu-van-an",
+        "name": "Chu Văn An (1292-1370)",
+        "description": "Nhà giáo, nhà nho lỗi lạc thời Trần, người thầy mẫu mực của nhiều thế hệ, nổi tiếng về sự chính trực, từng dâng \"Thất trảm sớ\" xin chém 7 gian thần. Được thờ tại Văn Miếu - Quốc Tử Giám.",
+        "image": "/images/figures/chu-van-an.jpg",
+        "rarity": "rare"
+      },
+      {
         "id": "figure-le-loi",
-        "name": "Lê Lợi (1385-1433)",
-        "description": "Lãnh tụ cuộc khởi nghĩa Lam Sơn, đánh đuổi quân Minh, sáng lập nhà Hậu Lê (Lê Thái Tổ).",
+        "name": "Lê Lợi (Lê Thái Tổ, 1385-1433)",
+        "description": "Lãnh tụ cuộc khởi nghĩa Lam Sơn, đánh đuổi quân Minh, sáng lập nhà Hậu Lê.",
         "image": "/images/figures/le-loi.jpg",
         "rarity": "epic"
       },
@@ -277,6 +319,13 @@
         "rarity": "epic"
       },
       {
+        "id": "figure-le-thanh-tong",
+        "name": "Lê Thánh Tông (1442-1497)",
+        "description": "Vị vua anh minh bậc nhất thời Hậu Lê, có công lớn trong việc xây dựng và phát triển đất nước Đại Việt hùng mạnh, ban hành bộ Luật Hồng Đức, mở mang bờ cõi và phát triển văn hóa, giáo dục.",
+        "image": "/images/figures/le-thanh-tong.jpg",
+        "rarity": "epic"
+      },
+      {
         "id": "figure-quang-trung",
         "name": "Quang Trung - Nguyễn Huệ (1753-1792)",
         "description": "Anh hùng áo vải, nhà quân sự thiên tài, lãnh đạo phong trào Tây Sơn, đánh đổ các thế lực phong kiến Trịnh, Nguyễn, Lê, đại phá quân Xiêm, quân Thanh, thống nhất đất nước.",
@@ -284,18 +333,11 @@
         "rarity": "legendary"
       },
       {
-        "id": "figure-ho-chi-minh",
-        "name": "Hồ Chí Minh (1890-1969)",
-        "description": "Vị lãnh tụ vĩ đại của dân tộc Việt Nam, người sáng lập Đảng Cộng sản Việt Nam, khai sinh nước Việt Nam Dân chủ Cộng hòa. Anh hùng giải phóng dân tộc, danh nhân văn hóa thế giới.",
-        "image": "/images/figures/ho-chi-minh.jpg",
-        "rarity": "legendary"
-      },
-      {
-        "id": "figure-vo-nguyen-giap",
-        "name": "Võ Nguyên Giáp (1911-2013)",
-        "description": "Đại tướng, Tổng Tư lệnh Quân đội Nhân dân Việt Nam. Nhà quân sự kiệt xuất, chỉ huy nhiều chiến dịch lớn, đặc biệt là chiến thắng Điện Biên Phủ (1954) và Chiến dịch Hồ Chí Minh (1975).",
-        "image": "/images/figures/vo-nguyen-giap.jpg",
-        "rarity": "legendary"
+        "id": "figure-nguyen-du",
+        "name": "Nguyễn Du (1766–1820)",
+        "description": "Đại thi hào dân tộc, Danh nhân văn hóa thế giới. Tác giả của kiệt tác 'Truyện Kiều', một tác phẩm đỉnh cao của văn học cổ điển Việt Nam.",
+        "image": "/images/figures/nguyen-du.jpg",
+        "rarity": "epic"
       },
       {
         "id": "figure-phan-boi-chau",
@@ -310,6 +352,27 @@
         "description": "Nhà yêu nước, nhà cải cách theo xu hướng ôn hòa, chủ trương khai dân trí, chấn dân khí, hậu dân sinh, dựa vào Pháp để cải cách.",
         "image": "/images/figures/phan-chu-trinh.jpg",
         "rarity": "rare"
+      },
+      {
+        "id": "figure-hoang-hoa-tham",
+        "name": "Hoàng Hoa Thám (1858-1913)",
+        "description": "Thủ lĩnh của cuộc khởi nghĩa Yên Thế kéo dài gần 30 năm chống thực dân Pháp cuối thế kỷ 19, đầu thế kỷ 20, được mệnh danh là 'Hùm thiêng Yên Thế'.",
+        "image": "/images/figures/hoang-hoa-tham.jpg",
+        "rarity": "rare"
+      },
+      {
+        "id": "figure-ho-chi-minh",
+        "name": "Hồ Chí Minh (1890-1969)",
+        "description": "Vị lãnh tụ vĩ đại của dân tộc Việt Nam, người sáng lập Đảng Cộng sản Việt Nam, khai sinh nước Việt Nam Dân chủ Cộng hòa. Anh hùng giải phóng dân tộc, danh nhân văn hóa thế giới.",
+        "image": "/images/figures/ho-chi-minh.jpg",
+        "rarity": "legendary"
+      },
+      {
+        "id": "figure-vo-nguyen-giap",
+        "name": "Võ Nguyên Giáp (1911-2013)",
+        "description": "Đại tướng, Tổng Tư lệnh Quân đội Nhân dân Việt Nam. Nhà quân sự kiệt xuất, chỉ huy nhiều chiến dịch lớn, đặc biệt là chiến thắng Điện Biên Phủ (1954) và Chiến dịch Hồ Chí Minh (1975).",
+        "image": "/images/figures/vo-nguyen-giap.jpg",
+        "rarity": "legendary"
       }
     ],
     "obtainedItemIds": {}
