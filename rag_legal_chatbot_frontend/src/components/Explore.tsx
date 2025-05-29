@@ -19,7 +19,7 @@ import {
   FiFlag,
   FiHome,
   FiList,
-  FiHelpCircle,
+  FiHelpCircle, // Added
   FiBarChart2,
   FiCompass,
   FiChevronUp,
@@ -31,34 +31,36 @@ import {
   FiTarget,
   FiZap,
   FiShield,
-  FiTrendingUp, // Added for Era icon
+  FiTrendingUp, 
+  FiImage 
 } from 'react-icons/fi';
 import { HistoricalDataService } from '../services/historicalDataService';
 import { HistoricalPeriod, HistoricalEvent, Challenge, HistoricalEra } from '../types/historicalData';
 import LearningSession from './LearningSession';
+import { useAppState } from '../hooks/useAppState'; // Added: Assuming this is the correct path
 
 interface ExploreProps {
-  onStartLearning: (period: HistoricalPeriod) => void;
-  unlockedPeriods: string[]; // This might become unlockedEras or handled within era/period objects
-  completedPeriods: string[]; // This might become completedEras or handled within era/period objects
+  onStartLearning: (period: HistoricalPeriod) => void; 
+  unlockedPeriods: string[]; 
+  completedPeriods: string[];
 }
 
 const Explore: React.FC<ExploreProps> = ({ onStartLearning, unlockedPeriods, completedPeriods }) => {
-  const [selectedPeriod, setSelectedPeriod] = useState<HistoricalPeriod | null>(null); // For event view, if used
+  const [selectedPeriod, setSelectedPeriod] = useState<HistoricalPeriod | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedType, setSelectedType] = useState<string>('all'); // For filtering periods
+  const [selectedType, setSelectedType] = useState<string>('all'); 
   
   const [eras, setEras] = useState<HistoricalEra[]>([]);
   const [selectedEra, setSelectedEra] = useState<HistoricalEra | null>(null);
   
-  const [periods, setPeriods] = useState<HistoricalPeriod[]>([]); // Periods of selectedEra
-  const [filteredPeriods, setFilteredPeriods] = useState<HistoricalPeriod[]>([]); // Filtered periods of selectedEra
+  const [periods, setPeriods] = useState<HistoricalPeriod[]>([]); 
+  const [filteredPeriods, setFilteredPeriods] = useState<HistoricalPeriod[]>([]); 
 
-  const [selectedView, setSelectedView] = useState<'timeline' | 'grid' | 'list'>('grid');
+  const [selectedView, setSelectedView] = useState<'grid' | 'timeline'>('grid');
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [retryCount, setRetryCount] = useState(0);
-  const [currentStreak, setCurrentStreak] = useState(0); // Example state
+  const [currentStreak, setCurrentStreak] = useState(0); 
   const [dailyChallenges, setDailyChallenges] = useState<Challenge[]>([]);
   const [weeklyChallenges, setWeeklyChallenges] = useState<Challenge[]>([]);
   
@@ -67,6 +69,7 @@ const Explore: React.FC<ExploreProps> = ({ onStartLearning, unlockedPeriods, com
   const [isLearningLoading, setIsLearningLoading] = useState(false);
 
   const historicalDataService = HistoricalDataService.getInstance();
+  const { toggleChatbot, setInitialChatbotQuery } = useAppState(); // Added for chatbot interaction
 
   useEffect(() => {
     const loadInitialData = async () => {
@@ -74,13 +77,12 @@ const Explore: React.FC<ExploreProps> = ({ onStartLearning, unlockedPeriods, com
         setIsLoading(true);
         setError(null);
         console.log('Explore: Starting initial data load (eras, challenges)...');
-        await historicalDataService.loadData(); // This loads eras, periods, and associates them.
+        await historicalDataService.loadData(); 
         
         const loadedEras = historicalDataService.getEras();
-        console.log('Explore: Eras loaded. Number of eras:', loadedEras.length);
+        console.log('Explore: Eras loaded. Number of eras:', loadedEras.length, loadedEras);
         setEras(loadedEras);
 
-        // Challenges are global
         setDailyChallenges(historicalDataService.getDailyChallenges());
         setWeeklyChallenges(historicalDataService.getWeeklyChallenges());
 
@@ -93,26 +95,24 @@ const Explore: React.FC<ExploreProps> = ({ onStartLearning, unlockedPeriods, com
       }
     };
     loadInitialData();
-  }, [retryCount, historicalDataService]);
+  }, [retryCount]); 
 
   useEffect(() => {
     if (selectedEra) {
       console.log(`Explore: Era selected: ${selectedEra.name}. Loading its periods.`);
-      const eraPeriods = selectedEra.periods || []; // Get periods from the selected era object
+      const eraPeriods = selectedEra.periods || []; 
       
-      // Apply search and type filters to these periods
       const filtered = eraPeriods.filter(period => 
-        (selectedType === 'all' /* Add period type filter if applicable, e.g. period.type */) &&
+        (selectedType === 'all' ) &&
         (searchQuery === '' || 
          period.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
          period.description.toLowerCase().includes(searchQuery.toLowerCase()))
       );
       
-      setPeriods(eraPeriods); // Store all periods for the current era
-      setFilteredPeriods(filtered); // Store filtered periods for display
+      setPeriods(eraPeriods); 
+      setFilteredPeriods(filtered); 
       console.log('Explore: Periods for selected era - Total:', eraPeriods.length, 'Filtered:', filtered.length);
     } else {
-      // No era selected, clear period lists
       setPeriods([]);
       setFilteredPeriods([]);
     }
@@ -121,14 +121,14 @@ const Explore: React.FC<ExploreProps> = ({ onStartLearning, unlockedPeriods, com
 
   const handleRetry = () => {
     setRetryCount(prev => prev + 1);
-    setSelectedEra(null); // Reset selection on retry
+    setSelectedEra(null); 
   };
 
   const handleEraSelected = (era: HistoricalEra) => {
     setSelectedEra(era);
-    setSelectedPeriod(null); // Clear any previously selected period detail
-    setSearchQuery('');      // Reset search query for periods
-    setSelectedType('all');  // Reset period filter
+    setSelectedPeriod(null); 
+    setSearchQuery('');      
+    setSelectedType('all');  
   };
 
   const handleBackToEras = () => {
@@ -138,13 +138,11 @@ const Explore: React.FC<ExploreProps> = ({ onStartLearning, unlockedPeriods, com
     setSelectedType('all');
   };
 
-  const handleStartLearning = async (period: HistoricalPeriod) => {
-    // Unlocked check for period should be ideally within period object itself
-    // For now, assume period.unlocked is checked or all are unlocked initially
-    // if (!period.unlocked) {
-    //   console.log(`Period ${period.name} is locked.`);
-    //   return;
-    // }
+  const handleStartLearningSession = async (period: HistoricalPeriod) => {
+    if (!period.unlocked) {
+       console.log(`Period ${period.name} is locked.`);
+       return;
+    }
     setIsLearningLoading(true);
     setError(null);
 
@@ -156,26 +154,41 @@ const Explore: React.FC<ExploreProps> = ({ onStartLearning, unlockedPeriods, com
         setShowLearningSession(true);
       } else if (periodWithEvents && (!periodWithEvents.events || periodWithEvents.events.length === 0)) {
         console.warn(`No events loaded for period: ${period.name}`);
-        setError(`Không tìm thấy nội dung bài học cho giai đoạn ${period.name}.`);
+        setError(`Không tìm thấy nội dung bài học cho giai đoạn ${period.name}. Thử làm mới trang hoặc chọn giai đoạn khác.`);
+        setLearningPeriod(null); 
+        setShowLearningSession(false); 
       } else {
          console.error(`Period not found or failed to load: ${period.id}`);
          setError('Không tìm thấy giai đoạn lịch sử hoặc không có nội dung.');
+         setLearningPeriod(null);
+         setShowLearningSession(false);
       }
     } catch (error: any) {
       console.error(`Error loading events for period ${period.name}:`, error);
       setError(error.message || 'Lỗi khi tải nội dung bài học. Vui lòng thử lại.');
+      setLearningPeriod(null);
+      setShowLearningSession(false);
     } finally {
       setIsLearningLoading(false);
     }
   };
 
-  const isPeriodCompleted = (periodId: string) => completedPeriods.includes(periodId); // Adapt if completion is per era
+  // Added: Function to handle asking chatbot about an Era
+  const handleAskChatbotAboutEra = (eraName: string) => {
+    setInitialChatbotQuery(`Hãy cho tôi biết thêm về thời đại lịch sử: ${eraName}`);
+    toggleChatbot(true); // Open the chatbot
+  };
 
-  // This function is kept for potential detailed view of events within Explore page itself,
-  // but primary learning is via LearningSession.
+  // Added: Function to handle asking chatbot about a Period
+  const handleAskChatbotAboutPeriod = (periodName: string) => {
+    setInitialChatbotQuery(`Hãy cho tôi biết thêm về giai đoạn lịch sử: ${periodName}`);
+    toggleChatbot(true); // Open the chatbot
+  };
+
+
+  const isPeriodCompleted = (periodId: string) => completedPeriods.includes(periodId);
+
   const renderContentCard = (event: HistoricalEvent, period: HistoricalPeriod) => {
-    // const isUnlocked = unlockedPeriods.includes(period.id); // This needs context if period refers to parent
-
     return (
       <motion.div
         key={event.id}
@@ -220,14 +233,13 @@ const Explore: React.FC<ExploreProps> = ({ onStartLearning, unlockedPeriods, com
   const renderChallengeCard = (challenge: Challenge) => (
     <motion.div
       key={challenge.id}
-      // whileHover={{ scale: 1.02 }} // Applied to parent in Challenges section
       className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md hover:shadow-lg transition-all"
     >
       <div className="flex items-start space-x-4">
         <div className={`w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0 ${
           challenge.type === 'daily' ? 'bg-blue-50 dark:bg-blue-900/30' :
           challenge.type === 'weekly' ? 'bg-purple-50 dark:bg-purple-900/30' :
-          'bg-yellow-50 dark:bg-yellow-900/30' // Fallback for other types
+          'bg-yellow-50 dark:bg-yellow-900/30'
         }`}>
           {challenge.type === 'daily' ? <FiClock className="w-6 h-6 text-blue-600 dark:text-blue-400" /> :
            challenge.type === 'weekly' ? <FiCalendar className="w-6 h-6 text-purple-600 dark:text-purple-400" /> :
@@ -241,7 +253,7 @@ const Explore: React.FC<ExploreProps> = ({ onStartLearning, unlockedPeriods, com
             {challenge.description}
           </p>
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 w-full">
               <div className="flex-1 h-2 bg-gray-200 dark:bg-gray-700 rounded-full">
                 <motion.div
                   initial={{ width: 0 }}
@@ -254,10 +266,10 @@ const Explore: React.FC<ExploreProps> = ({ onStartLearning, unlockedPeriods, com
               </span>
             </div>
             {challenge.completed && (
-              <FiCheck className="w-5 h-5 text-green-500" />
+              <FiCheck className="w-5 h-5 text-green-500 ml-2" />
             )}
           </div>
-          {challenge.rewards && ( // Ensure rewards object exists
+          {challenge.rewards && ( 
             <div className="mt-4 flex items-center space-x-2">
               {challenge.rewards.experience > 0 && (
                 <span className="flex items-center text-sm text-gray-600 dark:text-gray-300">
@@ -288,58 +300,87 @@ const Explore: React.FC<ExploreProps> = ({ onStartLearning, unlockedPeriods, com
       transition={{ type: "spring", stiffness: 300, damping: 25, restDelta: 0.001 }}
       whileHover={{ scale: 1.02 }}
       whileTap={era.unlocked ? { scale: 0.98 } : {}}
-      onClick={era.unlocked ? () => handleEraSelected(era) : undefined}
-      className={`bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md hover:shadow-lg transition-all relative overflow-hidden ${
+      // Removed onClick here to separate concerns for card sections
+      className={`bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-lg transition-all relative overflow-hidden flex flex-col ${
         era.completed
-          ? 'cursor-default opacity-80' 
+          ? 'opacity-80' 
           : era.unlocked
-            ? 'cursor-pointer'
-            : 'cursor-not-allowed opacity-50'
+            ? '' // Normal interactivity
+            : 'opacity-50' // Still show, but visually distinct as locked
       }`}
     >
-      {era.completed && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="absolute inset-0 bg-green-50 dark:bg-green-900/20 flex items-center justify-center z-10"
-        >
-          <FiCheck className="w-16 h-16 text-green-600 dark:text-green-400 opacity-50" />
-        </motion.div>
-      )}
-      {!era.unlocked && !era.completed && (
-         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="absolute inset-0 bg-gray-200 dark:bg-gray-900/50 flex items-center justify-center z-10"
-        >
-          <FiLock className="w-12 h-12 text-gray-600 dark:text-gray-400 opacity-70" />
-        </motion.div>
-      )}
-      <div className="flex items-start space-x-4">
-        <div className="w-12 h-12 rounded-lg bg-indigo-50 dark:bg-indigo-900/30 flex items-center justify-center flex-shrink-0">
-          <FiTrendingUp className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
-        </div>
-        <div className="flex-1 min-w-0">
-          <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-1">
-            {era.name}
-          </h3>
+      <div // Make image and main content clickable for era selection if unlocked
+        onClick={era.unlocked ? () => handleEraSelected(era) : undefined}
+        className={era.unlocked ? 'cursor-pointer' : 'cursor-not-allowed'}
+      >
+        {era.image ? (
+          <img 
+            src={era.image} 
+            alt={era.name} 
+            className={`w-full h-48 object-cover ${!era.unlocked || era.completed ? 'grayscale' : ''}`} 
+            onError={(e) => (e.currentTarget.style.display = 'none')} 
+          />
+        ) : (
+          <div className={`w-full h-48 flex items-center justify-center bg-gray-100 dark:bg-gray-700 ${!era.unlocked || era.completed ? 'grayscale' : ''}`}>
+            <FiImage className="w-16 h-16 text-gray-400 dark:text-gray-500" />
+          </div>
+        )}
+
+        <div className="p-6 flex-grow flex flex-col">
+          {era.completed && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="absolute inset-0 bg-green-50 dark:bg-green-900/20 flex items-center justify-center z-10 pointer-events-none"
+            >
+              <FiCheck className="w-16 h-16 text-green-600 dark:text-green-400 opacity-50" />
+            </motion.div>
+          )}
+          {!era.unlocked && !era.completed && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="absolute inset-0 bg-gray-200 dark:bg-gray-900/50 flex items-center justify-center z-10 pointer-events-none"
+            >
+              <FiLock className="w-12 h-12 text-gray-600 dark:text-gray-400 opacity-70" />
+            </motion.div>
+          )}
+          
+          <div className="flex items-center justify-between mb-2">
+            <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+              {era.name}
+            </h3>
+            {era.difficulty && (
+              <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${
+                era.difficulty === 'easy' ? 'bg-green-100 text-green-700 dark:bg-green-700 dark:text-green-100' :
+                era.difficulty === 'medium' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-700 dark:text-yellow-100' :
+                'bg-red-100 text-red-700 dark:bg-red-700 dark:text-red-100'
+              }`}>
+                {era.difficulty === 'easy' ? 'Dễ' : era.difficulty === 'medium' ? 'Trung bình' : 'Khó'}
+              </span>
+            )}
+          </div>
           <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">
             {era.startYear} - {era.endYear}
           </p>
-          <p className="text-gray-600 dark:text-gray-300 text-sm line-clamp-3 mb-4">
+          <p className="text-gray-600 dark:text-gray-300 text-sm line-clamp-3 mb-4 flex-grow">
             {era.description}
           </p>
-          <motion.button
+        </div>
+      </div>
+      {/* Buttons are outside the main clickable area for selection */}
+      <div className="p-6 pt-0"> {/* Adjust padding if needed */}
+        <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={era.unlocked && !era.completed ? { scale: 0.98 } : {}}
             onClick={(e) => {
-              e.stopPropagation();
+              e.stopPropagation(); 
               if (era.unlocked && !era.completed) {
-                 handleEraSelected(era);
+                handleEraSelected(era);
               }
             }}
             disabled={!era.unlocked || era.completed}
-            className={`w-full px-4 py-2 rounded-lg font-medium transition-colors flex items-center justify-center space-x-2 ${
+            className={`w-full mb-2 px-4 py-2 rounded-lg font-medium transition-colors flex items-center justify-center space-x-2 ${
               era.completed
                 ? 'bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed'
                 : era.unlocked
@@ -347,24 +388,31 @@ const Explore: React.FC<ExploreProps> = ({ onStartLearning, unlockedPeriods, com
                   : 'bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed'
             }`}
           >
-             {era.completed ? (
-               <>
-                 <FiCheck className="w-5 h-5" />
-                 <span>Đã hoàn thành</span>
-               </>
-             ) : !era.unlocked ? (
-               <>
-                 <FiLock className="w-5 h-5" />
-                 <span>Chưa mở khóa</span>
-               </>
-             ) : (
-               <>
-                 <FiChevronRight className="w-5 h-5" />
-                 <span>Khám phá Thời đại</span>
-               </>
-             )}
+            {era.completed ? (
+              <><FiCheck className="w-5 h-5" /><span>Đã hoàn thành</span></>
+            ) : !era.unlocked ? (
+              <><FiLock className="w-5 h-5" /><span>Chưa mở khóa</span></>
+            ) : (
+              <><FiCompass className="w-5 h-5" /><span>Khám phá Thời đại</span></>
+            )}
           </motion.button>
-        </div>
+        
+        {/* Added "Ask Chatbot" button for Eras */}
+        {era.unlocked && (
+           <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleAskChatbotAboutEra(era.name);
+            }}
+            className="w-full px-4 py-2 rounded-lg bg-sky-100 dark:bg-sky-800 text-sky-700 dark:text-sky-300 hover:bg-sky-200 dark:hover:bg-sky-700 transition-colors flex items-center justify-center space-x-2 text-sm"
+            aria-label={`Hỏi chatbot về ${era.name}`}
+          >
+            <FiHelpCircle className="w-4 h-4" />
+            <span>Hỏi Chatbot</span>
+          </motion.button>
+        )}
       </div>
     </motion.div>
   );
@@ -379,7 +427,7 @@ const Explore: React.FC<ExploreProps> = ({ onStartLearning, unlockedPeriods, com
     );
   }
 
-  if (error) {
+  if (error && !isLearningLoading) { 
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh]">
         <div className="bg-red-50 dark:bg-red-900/30 rounded-xl p-6 max-w-md text-center">
@@ -395,10 +443,9 @@ const Explore: React.FC<ExploreProps> = ({ onStartLearning, unlockedPeriods, com
     );
   }
 
-  // Determine what to display based on selection state
   const displayItems = selectedEra 
-    ? (selectedPeriod ? selectedPeriod.events : filteredPeriods) // If era selected, show its periods (or events if period also selected)
-    : eras; // If no era selected, show eras
+    ? (selectedPeriod ? selectedPeriod.events : filteredPeriods) 
+    : eras; 
 
   const currentViewTitle = selectedEra 
     ? selectedEra.name 
@@ -410,7 +457,6 @@ const Explore: React.FC<ExploreProps> = ({ onStartLearning, unlockedPeriods, com
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      {/* Header Section */}
       <div className="mb-8">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div className="flex items-center space-x-4">
@@ -435,7 +481,6 @@ const Explore: React.FC<ExploreProps> = ({ onStartLearning, unlockedPeriods, com
             </div>
           </div>
 
-          {/* View Toggle - Applicable when showing periods or eras */}
           <div className="flex items-center space-x-2 bg-gray-50 dark:bg-gray-800 rounded-lg p-1">
             <motion.button
               whileHover={{ scale: 1.05 }}
@@ -449,10 +494,10 @@ const Explore: React.FC<ExploreProps> = ({ onStartLearning, unlockedPeriods, com
             >
               <FiGrid className="w-5 h-5" />
             </motion.button>
-            <motion.button
+            <motion.button 
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => setSelectedView('timeline')} // Timeline view might need specific logic for eras vs periods
+              onClick={() => setSelectedView('timeline')} 
               className={`p-2 rounded-lg transition-colors ${
                 selectedView === 'timeline' 
                   ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-sm' 
@@ -465,7 +510,6 @@ const Explore: React.FC<ExploreProps> = ({ onStartLearning, unlockedPeriods, com
         </div>
       </div>
 
-      {/* Search and Filter Section - Shown only when an era is selected (to filter periods) */}
       {selectedEra && !selectedPeriod && (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
           <div className="md:col-span-2">
@@ -482,20 +526,25 @@ const Explore: React.FC<ExploreProps> = ({ onStartLearning, unlockedPeriods, com
           </div>
           <div className="relative">
             <FiFilter className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
-            <select // This filter might be for period types if applicable
+            <select 
               value={selectedType}
               onChange={(e) => setSelectedType(e.target.value)}
               className="w-full pl-12 pr-4 py-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="all">Tất cả loại giai đoạn</option>
-              {/* Add options for period types if relevant, e.g., from a predefined list */}
-              {/* <option value="dynasty">Triều đại</option> */}
             </select>
           </div>
         </div>
       )}
+      
+      {isLearningLoading && error && (
+         <div className="my-4 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-700 text-red-700 dark:text-red-300 px-4 py-3 rounded-lg relative" role="alert">
+            <strong className="font-bold">Lỗi!</strong>
+            <span className="block sm:inline"> {error}</span>
+         </div>
+      )}
 
-      {/* Challenges Section - Always visible */}
+
       <section className="mb-8">
         <div className="flex items-center justify-between mb-6">
           <div>
@@ -521,11 +570,11 @@ const Explore: React.FC<ExploreProps> = ({ onStartLearning, unlockedPeriods, com
               Thử thách hằng ngày
             </h3>
             <div className="space-y-4">
-              {dailyChallenges.map(challenge => (
+              {dailyChallenges.length > 0 ? dailyChallenges.map(challenge => (
                 <motion.div key={challenge.id} whileHover={{ scale: 1.02 }}>
                   {renderChallengeCard(challenge)}
                 </motion.div>
-              ))}
+              )) : <p className="text-gray-500 dark:text-gray-400">Không có thử thách hằng ngày.</p>}
             </div>
           </div>
           <div>
@@ -533,20 +582,18 @@ const Explore: React.FC<ExploreProps> = ({ onStartLearning, unlockedPeriods, com
               Thử thách hằng tuần
             </h3>
             <div className="space-y-4">
-              {weeklyChallenges.map(challenge => (
+              {weeklyChallenges.length > 0 ? weeklyChallenges.map(challenge => (
                 <motion.div key={challenge.id} whileHover={{ scale: 1.02 }}>
                   {renderChallengeCard(challenge)}
                 </motion.div>
-              ))}
+              )) : <p className="text-gray-500 dark:text-gray-400">Không có thử thách hằng tuần.</p>}
             </div>
           </div>
         </div>
       </section>
 
-      {/* Content Grid - Shows Eras or Periods */}
       <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {!selectedEra ? (
-          // Display Eras
           eras.length > 0 ? (
             eras.map(era => renderEraCard(era))
           ) : (
@@ -563,9 +610,6 @@ const Explore: React.FC<ExploreProps> = ({ onStartLearning, unlockedPeriods, com
             </div>
           )
         ) : selectedPeriod ? (
-          // Display Events of a selected period (if Explore page itself shows event details)
-          // This part reuses the renderContentCard for events.
-          // If LearningSession is the only way to see events, this branch might not be reached often.
           selectedPeriod.events && selectedPeriod.events.length > 0 ? (
             selectedPeriod.events.map(event => renderContentCard(event, selectedPeriod))
           ) : (
@@ -582,11 +626,9 @@ const Explore: React.FC<ExploreProps> = ({ onStartLearning, unlockedPeriods, com
             </div>
           )
         ) : (
-          // Display Periods of the selectedEra
           filteredPeriods.length > 0 ? (
             filteredPeriods.map((period) => {
               const isCompleted = isPeriodCompleted(period.id);
-              // Re-using the period card rendering logic from the original component
               return (
               <motion.div
                   key={period.id}
@@ -596,72 +638,74 @@ const Explore: React.FC<ExploreProps> = ({ onStartLearning, unlockedPeriods, com
                   exit={{ opacity: 0, y: 15, scale: 0.97 }}
                   transition={{ type: "spring", stiffness: 300, damping: 30, restDelta: 0.001 }}
                   whileHover={{ scale: 1.02 }}
-                  whileTap={isCompleted || !period.unlocked ? {} : { scale: 0.98 }}
-                  onClick={isCompleted || !period.unlocked ? undefined : () => handleStartLearning(period)}
-                  className={`bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md hover:shadow-lg transition-all relative overflow-hidden ${
+                  // Removed whileTap and onClick from main card to handle buttons separately
+                  className={`bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-lg transition-all relative overflow-hidden flex flex-col ${
                     isCompleted
-                      ? 'cursor-default opacity-80'
+                      ? 'opacity-80'
                       : period.unlocked
-                        ? 'cursor-pointer'
-                        : 'cursor-not-allowed opacity-50'
+                        ? '' 
+                        : 'opacity-50'
                   }`}
                 >
-                  {isCompleted && (
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      className="absolute inset-0 bg-green-50 dark:bg-green-900/20 flex items-center justify-center z-10"
-                    >
-                      <FiCheck className="w-16 h-16 text-green-600 dark:text-green-400 opacity-50" />
-                    </motion.div>
-                  )}
-
-                  {!period.unlocked && !isCompleted && (
-                     <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      className="absolute inset-0 bg-gray-200 dark:bg-gray-900/50 flex items-center justify-center z-10"
-                    >
-                      <FiLock className="w-12 h-12 text-gray-600 dark:text-gray-400 opacity-70" />
-                    </motion.div>
-                  )}
-
-                  {period.image && (
-                    <img
-                      src={period.image}
-                      alt={period.name}
-                      className={`w-full h-40 object-cover rounded-lg mb-4 ${
-                         !period.unlocked || isCompleted ? 'grayscale' : ''
-                      }`}
-                    />
-                  )}
-
-                  <div className="flex items-start space-x-4">
-                    <div className="w-12 h-12 rounded-lg bg-purple-50 dark:bg-purple-900/30 flex items-center justify-center flex-shrink-0">
-                      <FiCalendar className="w-6 h-6 text-purple-600 dark:text-purple-400" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-1">
-                        {period.name}
-                      </h3>
+                  <div // Image and text content area, make it clickable if unlocked and not completed
+                    onClick={isCompleted || !period.unlocked ? undefined : () => handleStartLearningSession(period)}
+                    className={isCompleted || !period.unlocked ? 'cursor-default' : 'cursor-pointer'}
+                  >
+                    {period.image && (
+                      <img
+                        src={period.image}
+                        alt={period.name}
+                        className={`w-full h-40 object-cover rounded-t-lg ${ 
+                          !period.unlocked || isCompleted ? 'grayscale' : ''
+                        }`}
+                        onError={(e) => (e.currentTarget.style.display = 'none')}
+                      />
+                    )}
+                    <div className="p-6 flex-grow flex flex-col"> 
+                      {isCompleted && (
+                        <motion.div
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          className="absolute inset-0 bg-green-50 dark:bg-green-900/20 flex items-center justify-center z-10 pointer-events-none"
+                        >
+                          <FiCheck className="w-16 h-16 text-green-600 dark:text-green-400 opacity-50" />
+                        </motion.div>
+                      )}
+                      {!period.unlocked && !isCompleted && (
+                        <motion.div
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          className="absolute inset-0 bg-gray-200 dark:bg-gray-900/50 flex items-center justify-center z-10 pointer-events-none"
+                        >
+                          <FiLock className="w-12 h-12 text-gray-600 dark:text-gray-400 opacity-70" />
+                        </motion.div>
+                      )}
+                      <div className="flex items-center justify-between mb-2">
+                        <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                          {period.name}
+                        </h3>
+                      </div>
                       <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">
                         {period.startYear} - {period.endYear}
                       </p>
-                      <p className="text-gray-600 dark:text-gray-300 text-sm line-clamp-3 mb-4">
+                      <p className="text-gray-600 dark:text-gray-300 text-sm line-clamp-3 mb-4 flex-grow">
                         {period.description}
                       </p>
-
-                      <motion.button
+                    </div>
+                  </div>
+                  {/* Buttons are outside the main clickable area */}
+                  <div className="p-6 pt-0"> {/* Adjust padding */}
+                    <motion.button
                         whileHover={{ scale: 1.02 }}
                         whileTap={isCompleted || !period.unlocked ? {} : { scale: 0.98 }}
                         onClick={(e) => {
                           e.stopPropagation();
                           if (!isCompleted && period.unlocked) {
-                             handleStartLearning(period);
+                            handleStartLearningSession(period); // This is the existing function to start LearningSession modal
                           }
                         }}
                         disabled={!period.unlocked || isCompleted}
-                        className={`w-full px-4 py-2 rounded-lg font-medium transition-colors flex items-center justify-center space-x-2 ${
+                        className={`w-full mb-2 px-4 py-2 rounded-lg font-medium transition-colors flex items-center justify-center space-x-2 ${
                           isCompleted
                             ? 'bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed'
                             : period.unlocked
@@ -669,24 +713,31 @@ const Explore: React.FC<ExploreProps> = ({ onStartLearning, unlockedPeriods, com
                               : 'bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed'
                         }`}
                       >
-                         {isCompleted ? (
-                           <>
-                             <FiCheck className="w-5 h-5" />
-                             <span>Đã hoàn thành</span>
-                           </>
-                         ) : !period.unlocked ? (
-                           <>
-                             <FiLock className="w-5 h-5" />
-                             <span>Chưa mở khóa</span>
-                           </>
-                         ) : (
-                           <>
-                             <FiPlay className="w-5 h-5" />
-                             <span>Bắt đầu học</span>
-                           </>
-                         )}
+                        {isCompleted ? (
+                          <><FiCheck className="w-5 h-5" /><span>Đã hoàn thành</span></>
+                        ) : !period.unlocked ? (
+                          <><FiLock className="w-5 h-5" /><span>Chưa mở khóa</span></>
+                        ) : (
+                          <><FiPlay className="w-5 h-5" /><span>Bắt đầu học</span></>
+                        )}
                       </motion.button>
-                    </div>
+
+                    {/* Added "Ask Chatbot" button for Periods */}
+                    {period.unlocked && (
+                      <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleAskChatbotAboutPeriod(period.name);
+                        }}
+                        className="w-full px-4 py-2 rounded-lg bg-sky-100 dark:bg-sky-800 text-sky-700 dark:text-sky-300 hover:bg-sky-200 dark:hover:bg-sky-700 transition-colors flex items-center justify-center space-x-2 text-sm"
+                        aria-label={`Hỏi chatbot về ${period.name}`}
+                      >
+                        <FiHelpCircle className="w-4 h-4" />
+                        <span>Hỏi Chatbot</span>
+                      </motion.button>
+                    )}
                   </div>
                 </motion.div>
               );
@@ -709,17 +760,14 @@ const Explore: React.FC<ExploreProps> = ({ onStartLearning, unlockedPeriods, com
         )}
       </motion.div>
 
-
       {showLearningSession && learningPeriod && (
         <LearningSession
           period={learningPeriod}
           onComplete={(score, rewards) => {
             setShowLearningSession(false);
-            // Potentially update completion status for learningPeriod
-            // e.g., setCompletedPeriods([...completedPeriods, learningPeriod.id]);
+            console.log(`Learning session for ${learningPeriod.name} completed. Score: ${score}, Rewards:`, rewards);
+            onStartLearning(learningPeriod); // Call this to signify session ended. It may or may not handle completion state.
             setLearningPeriod(null);
-            // onStartLearning(learningPeriod); // This was likely for re-triggering something, review if needed
-            console.log(`Learning session for ${learningPeriod.name} completed. Score: ${score}`);
           }}
           onExit={() => {
             setShowLearningSession(false);
@@ -731,4 +779,4 @@ const Explore: React.FC<ExploreProps> = ({ onStartLearning, unlockedPeriods, com
   );
 };
 
-export default Explore; 
+export default Explore;

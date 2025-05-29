@@ -4,16 +4,24 @@ export interface HistoricalEra {
   description: string;
   startYear: number;
   endYear: number;
-  periods: HistoricalPeriod[];
+  periods: HistoricalPeriod[]; // This is populated by the service
   unlocked: boolean;
   completed: boolean;
   achievements?: Achievement[];
+
+  // New/Updated fields from eras.json
+  image?: string;
+  audio?: string;
+  difficulty?: 'easy' | 'medium' | 'hard';
   rewards?: {
     experience: number;
-    coins: number;
     items: string[];
-    badges: string[];
+    // Optional if they can come from other sources or for future use
+    coins?: number; 
+    badges?: string[];
   };
+  dataFile?: string; // Path to CSV file for this era's content (metadata for now)
+
   progress?: {
     completedPeriods: number;
     totalPeriods: number;
@@ -34,7 +42,7 @@ export interface HistoricalPeriod {
     experience: number;
     coins: number;
   };
-  image?: string;
+  image?: string; // Existing: an image specific to a period
 }
 
 export interface HistoricalContent {
