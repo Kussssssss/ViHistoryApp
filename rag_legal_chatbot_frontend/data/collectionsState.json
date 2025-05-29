@@ -1,0 +1,542 @@
+[
+  {
+    "id": "collection-vietnamese-dynasties",
+    "title": "Các triều đại Việt Nam",
+    "allPossibleItems": [
+      {
+        "id": "item-tien-ly-van-xuan",
+        "name": "Nhà Tiền Lý - Nước Vạn Xuân (544-602)",
+        "description": "Do Lý Bí (Lý Nam Đế) sáng lập, xưng đế, đặt quốc hiệu Vạn Xuân, khẳng định ý chí độc lập sau hơn 500 năm Bắc thuộc.",
+        "image": "/images/history/tien-ly-van-xuan-dynasty.jpg",
+        "rarity": "rare"
+      },
+      {
+        "id": "item-ngo",
+        "name": "Nhà Ngô (939-967)",
+        "description": "Do Ngô Quyền sáng lập sau chiến thắng Bạch Đằng lịch sử, đánh dấu nền độc lập tự chủ của dân tộc.",
+        "image": "/images/history/ngo-dynasty.jpg",
+        "rarity": "rare"
+      },
+      {
+        "id": "item-loan-12-su-quan",
+        "name": "Thời kỳ Loạn 12 sứ quân (944-968)",
+        "description": "Giai đoạn hỗn loạn sau khi Ngô Quyền mất, đất nước bị chia cắt bởi 12 thế lực quân sự, kết thúc khi Đinh Bộ Lĩnh dẹp yên và thống nhất.",
+        "image": "/images/history/loan-12-su-quan.jpg",
+        "rarity": "common"
+      },
+      {
+        "id": "item-dinh",
+        "name": "Nhà Đinh (968-980)",
+        "description": "Do Đinh Bộ Lĩnh sáng lập, thống nhất đất nước sau loạn 12 sứ quân, đặt quốc hiệu Đại Cồ Việt.",
+        "image": "/images/history/dinh-dynasty.jpg",
+        "rarity": "common"
+      },
+      {
+        "id": "item-tien-le",
+        "name": "Nhà Tiền Lê (980-1009)",
+        "description": "Do Lê Hoàn sáng lập, nổi tiếng với chiến thắng chống quân Tống xâm lược năm 981.",
+        "image": "/images/history/tien-le-dynasty.jpg",
+        "rarity": "rare"
+      },
+      {
+        "id": "item-ly",
+        "name": "Nhà Lý (1009-1225)",
+        "description": "Phát triển văn hóa, giáo dục (xây dựng Văn Miếu - Quốc Tử Giám), luật pháp (Hình thư), kinh tế và quân sự. Dời đô về Thăng Long.",
+        "image": "/images/history/ly-dynasty.jpg",
+        "rarity": "epic"
+      },
+      {
+        "id": "item-tran",
+        "name": "Nhà Trần (1225-1400)",
+        "description": "Nổi tiếng với ba lần chiến thắng quân xâm lược Mông - Nguyên, phát triển chữ Nôm và tinh thần Đông A.",
+        "image": "/images/history/tran-dynasty.jpg",
+        "rarity": "legendary"
+      },
+      {
+        "id": "item-ho",
+        "name": "Nhà Hồ (1400-1407)",
+        "description": "Do Hồ Quý Ly sáng lập, thực hiện nhiều cải cách táo bạo (tiền giấy, hạn nô), xây thành Tây Đô. Thất bại trong cuộc kháng chiến chống Minh.",
+        "image": "/images/history/ho-dynasty.jpg",
+        "rarity": "common"
+      },
+      {
+        "id": "item-hau-le",
+        "name": "Nhà Hậu Lê (1428-1789)",
+        "description": "Giai đoạn Lê Sơ (1428-1527) do Lê Lợi sáng lập, phát triển rực rỡ (Luật Hồng Đức). Giai đoạn Lê Trung Hưng (1533-1789) khôi phục sau thời Mạc.",
+        "image": "/images/history/hau-le-dynasty.jpg",
+        "rarity": "epic"
+      },
+      {
+        "id": "item-mac",
+        "name": "Nhà Mạc (1527-1592)",
+        "description": "Do Mạc Đăng Dung sáng lập sau khi giành ngôi từ nhà Lê. Đối đầu với nhà Lê Trung Hưng (Nam-Bắc triều).",
+        "image": "/images/history/mac-dynasty.jpg",
+        "rarity": "rare"
+      },
+      {
+        "id": "item-trinh-nguyen",
+        "name": "Thời kỳ Trịnh - Nguyễn Phân Tranh (1545-1786)",
+        "description": "Đất nước bị chia cắt thành Đàng Trong (Chúa Nguyễn) và Đàng Ngoài (Chúa Trịnh), trên danh nghĩa vẫn tôn phò vua Lê. Kéo dài hơn 200 năm.",
+        "image": "/images/history/trinh-nguyen-division.jpg",
+        "rarity": "rare"
+      },
+      {
+        "id": "item-tay-son",
+        "name": "Nhà Tây Sơn (1778-1802)",
+        "description": "Do ba anh em Nguyễn Nhạc, Nguyễn Huệ, Nguyễn Lữ lãnh đạo, lật đổ chúa Trịnh, chúa Nguyễn, đánh tan quân Xiêm, quân Thanh, thống nhất đất nước.",
+        "image": "/images/history/tay-son-dynasty.jpg",
+        "rarity": "epic"
+      },
+      {
+        "id": "item-nguyen",
+        "name": "Nhà Nguyễn (1802-1945)",
+        "description": "Triều đại phong kiến cuối cùng của Việt Nam, do Gia Long (Nguyễn Ánh) sáng lập. Thống nhất đất nước, nhưng sau đó từng bước bị Pháp xâm lược và đô hộ.",
+        "image": "/images/history/nguyen-dynasty.jpg",
+        "rarity": "rare"
+      },
+      {
+        "id": "item-vndcch",
+        "name": "Việt Nam Dân chủ Cộng hòa (1945-1976)",
+        "description": "Thành lập sau Cách mạng Tháng Tám, do Chủ tịch Hồ Chí Minh lãnh đạo, tiến hành hai cuộc kháng chiến chống Pháp và chống Mỹ.",
+        "image": "/images/history/vndcch-state.jpg",
+        "rarity": "epic"
+      },
+      {
+        "id": "item-chxhcnvn",
+        "name": "Cộng hòa Xã hội chủ nghĩa Việt Nam (1976-2000)",
+        "description": "Đất nước thống nhất sau năm 1975, giai đoạn đầu tập trung khắc phục hậu quả chiến tranh, xây dựng và bảo vệ Tổ quốc (đến năm 2000).",
+        "image": "/images/history/chxhcnvn-state.jpg",
+        "rarity": "epic"
+      }
+    ],
+    "obtainedItemIds": {
+      "item-ngo": "2024-03-20",
+      "item-dinh": "2024-04-10",
+      "item-tien-le": "2024-05-01"
+    }
+  },
+  {
+    "id": "collection-historic-battles",
+    "title": "Các trận đánh lịch sử và sự kiện quan trọng",
+    "allPossibleItems": [
+      {
+        "id": "item-hai-ba-trung",
+        "name": "Khởi nghĩa Hai Bà Trưng (40-43)",
+        "description": "Cuộc khởi nghĩa lớn chống lại ách đô hộ của nhà Hán phương Bắc, do Trưng Trắc và Trưng Nhị lãnh đạo, thể hiện ý chí độc lập dân tộc.",
+        "image": "/images/history/hai-ba-trung.jpg",
+        "rarity": "epic"
+      },
+      {
+        "id": "item-ba-trieu",
+        "name": "Khởi nghĩa Bà Triệu (248)",
+        "description": "Triệu Thị Trinh (Bà Triệu) lãnh đạo nhân dân Cửu Chân nổi dậy chống quân Đông Ngô, nổi tiếng với câu nói: \"Tôi muốn cưỡi cơn gió mạnh, đạp luồng sóng dữ...\".",
+        "image": "/images/history/ba-trieu.jpg",
+        "rarity": "rare"
+      },
+      {
+        "id": "item-bach-dang-938",
+        "name": "Trận Bạch Đằng (938)",
+        "description": "Chiến thắng quyết định của Ngô Quyền trước quân Nam Hán bằng kế cắm cọc gỗ trên sông Bạch Đằng, khẳng định nền độc lập tự chủ.",
+        "image": "/images/history/bach-dang-938.jpg",
+        "rarity": "epic"
+      },
+      {
+        "id": "item-nhu-nguyet",
+        "name": "Trận chiến sông Như Nguyệt (1077)",
+        "description": "Lý Thường Kiệt chỉ huy quân đội nhà Lý đánh tan quân Tống xâm lược trên phòng tuyến sông Như Nguyệt, gắn liền với bài thơ \"Nam quốc sơn hà\".",
+        "image": "/images/history/nhu-nguyet.jpg",
+        "rarity": "epic"
+      },
+      {
+        "id": "item-chi-lang-xuong-giang",
+        "name": "Trận Chi Lăng - Xương Giang (1427)",
+        "description": "Chiến thắng quyết định của nghĩa quân Lam Sơn (Lê Lợi) trước viện binh quân Minh, buộc quân Minh phải rút về nước, kết thúc 20 năm đô hộ.",
+        "image": "/images/history/chi-lang-xuong-giang.jpg",
+        "rarity": "legendary"
+      },
+      {
+        "id": "item-rach-gam-xoai-mut",
+        "name": "Trận Rạch Gầm - Xoài Mút (1785)",
+        "description": "Nguyễn Huệ chỉ huy quân Tây Sơn đại phá 5 vạn quân Xiêm và quân Nguyễn Ánh, một trận thủy chiến lừng lẫy trong lịch sử.",
+        "image": "/images/history/rach-gam-xoai-mut.jpg",
+        "rarity": "epic"
+      },
+      {
+        "id": "item-dong-da",
+        "name": "Trận Ngọc Hồi - Đống Đa (1789)",
+        "description": "Hoàng đế Quang Trung (Nguyễn Huệ) thần tốc tiến quân, đại phá 29 vạn quân Thanh, giải phóng Thăng Long vào mùng 5 Tết Kỷ Dậu.",
+        "image": "/images/history/dong-da.jpg",
+        "rarity": "legendary"
+      },
+      {
+        "id": "item-can-vuong",
+        "name": "Phong trào Cần Vương (1885-1896)",
+        "description": "Phong trào yêu nước chống Pháp theo chiếu Cần Vương của vua Hàm Nghi, với nhiều cuộc khởi nghĩa tiêu biểu như Ba Đình, Bãi Sậy, Hương Khê.",
+        "image": "/images/history/can-vuong.jpg",
+        "rarity": "rare"
+      },
+      {
+        "id": "item-cach-mang-thang-tam",
+        "name": "Cách mạng Tháng Tám (1945)",
+        "description": "Cuộc tổng khởi nghĩa giành chính quyền trên cả nước do Việt Minh lãnh đạo, lật đổ ách thống trị của phát xít Nhật và thực dân Pháp, khai sinh nước Việt Nam Dân chủ Cộng hòa.",
+        "image": "/images/history/cach-mang-thang-tam.jpg",
+        "rarity": "epic"
+      },
+      {
+        "id": "item-dien-bien-phu",
+        "name": "Chiến dịch Điện Biên Phủ (1954)",
+        "description": "Chiến thắng quyết định của Quân đội Nhân dân Việt Nam trước quân đội Liên hiệp Pháp, buộc Pháp ký Hiệp định Genève, kết thúc chiến tranh Đông Dương.",
+        "image": "/images/history/dien-bien-phu.jpg",
+        "rarity": "legendary"
+      },
+      {
+        "id": "item-mau-than-1968",
+        "name": "Tổng tiến công và nổi dậy Tết Mậu Thân (1968)",
+        "description": "Cuộc tấn công đồng loạt vào các đô thị miền Nam Việt Nam của Quân Giải phóng và nhân dân, tạo bước ngoặt trong Chiến tranh Việt Nam.",
+        "image": "/images/history/mau-than-1968.jpg",
+        "rarity": "epic"
+      },
+      {
+        "id": "item-ho-chi-minh-campaign",
+        "name": "Chiến dịch Hồ Chí Minh (1975)",
+        "description": "Chiến dịch quân sự cuối cùng trong cuộc Tổng tiến công và nổi dậy Mùa Xuân 1975, giải phóng Sài Gòn, kết thúc Chiến tranh Việt Nam, thống nhất đất nước.",
+        "image": "/images/history/ho-chi-minh-campaign.jpg",
+        "rarity": "legendary"
+      },
+      {
+        "id": "item-chien-tranh-bien-gioi-tay-nam",
+        "name": "Chiến tranh biên giới Tây Nam (1975-1979)",
+        "description": "Quân đội Việt Nam chiến đấu bảo vệ biên giới Tây Nam và cùng lực lượng vũ trang cách mạng Campuchia lật đổ chế độ diệt chủng Pol Pot.",
+        "image": "/images/history/chien-tranh-bien-gioi-tay-nam.jpg",
+        "rarity": "rare"
+      },
+      {
+        "id": "item-chien-tranh-bien-gioi-phia-bac",
+        "name": "Chiến tranh biên giới phía Bắc (1979)",
+        "description": "Cuộc chiến đấu anh dũng của quân và dân Việt Nam bảo vệ chủ quyền lãnh thổ ở biên giới phía Bắc Tổ quốc.",
+        "image": "/images/history/chien-tranh-bien-gioi-phia-bac.jpg",
+        "rarity": "rare"
+      }
+    ],
+    "obtainedItemIds": {
+      "item-bach-dang-938": "2024-02-15",
+      "item-chi-lang-xuong-giang": "2024-06-01"
+    }
+  },
+  {
+    "id": "collection-historic-figures",
+    "title": "Nhân vật lịch sử",
+    "allPossibleItems": [
+      {
+        "id": "figure-trung-trac-nhi",
+        "name": "Hai Bà Trưng",
+        "description": "Trưng Trắc và Trưng Nhị, lãnh đạo cuộc khởi nghĩa (40-43) chống ách đô hộ của nhà Hán, xưng vương và lập nên nền độc lập ngắn ngủi.",
+        "image": "/images/figures/hai-ba-trung.jpg",
+        "rarity": "legendary"
+      },
+      {
+        "id": "figure-ba-trieu",
+        "name": "Bà Triệu (226-248)",
+        "description": "Nữ anh hùng dân tộc, còn gọi là Triệu Thị Trinh, lãnh đạo cuộc khởi nghĩa chống quân Đông Ngô thế kỷ thứ 3. Nổi tiếng với câu nói: 'Tôi muốn cưỡi cơn gió mạnh, đạp luồng sóng dữ, chém cá kình ở biển Đông, đánh đuổi quân Ngô, giành lại giang sơn, cởi ách nô lệ, chứ không chịu khom lưng làm tì thiếp cho người!'",
+        "image": "/images/figures/ba-trieu.jpg",
+        "rarity": "epic"
+      },
+      {
+        "id": "figure-ly-nam-de",
+        "name": "Lý Nam Đế (Lý Bí, 503-548)",
+        "description": "Người lãnh đạo cuộc khởi nghĩa chống quân Lương, sáng lập nhà Tiền Lý và nước Vạn Xuân, xưng đế năm 544, khẳng định ý chí độc lập tự chủ của dân tộc.",
+        "image": "/images/figures/ly-nam-de.jpg",
+        "rarity": "epic"
+      },
+      {
+        "id": "figure-ngo-quyen",
+        "name": "Ngô Quyền (898-944)",
+        "description": "Anh hùng dân tộc, người đã lãnh đạo nhân dân đánh tan quân Nam Hán trong trận Bạch Đằng năm 938, chấm dứt hơn 1000 năm Bắc thuộc, mở ra kỷ nguyên độc lập.",
+        "image": "/images/figures/ngo-quyen.jpg",
+        "rarity": "epic"
+      },
+      {
+        "id": "figure-dinh-bo-linh",
+        "name": "Đinh Bộ Lĩnh (924-979)",
+        "description": "Người có công dẹp loạn 12 sứ quân, thống nhất đất nước, lập ra nhà Đinh, đặt quốc hiệu Đại Cồ Việt, xưng là Đinh Tiên Hoàng Đế.",
+        "image": "/images/figures/dinh-bo-linh.jpg",
+        "rarity": "rare"
+      },
+      {
+        "id": "figure-le-hoan",
+        "name": "Lê Hoàn (Lê Đại Hành, 941-1005)",
+        "description": "Vị vua sáng lập nhà Tiền Lê, người có công lãnh đạo quân dân Đại Cồ Việt đánh tan quân Tống xâm lược năm 981, giữ vững nền độc lập dân tộc.",
+        "image": "/images/figures/le-hoan.jpg",
+        "rarity": "rare"
+      },
+      {
+        "id": "figure-ly-thai-to",
+        "name": "Lý Thái Tổ (Lý Công Uẩn, 974-1028)",
+        "description": "Vị vua sáng lập triều Lý, người có công dời đô từ Hoa Lư về Đại La và đặt tên là Thăng Long (nay là Hà Nội) vào năm 1010 với Chiếu dời đô lịch sử, mở ra một thời kỳ phát triển thịnh vượng của Đại Việt.",
+        "image": "/images/figures/ly-thai-to.jpg",
+        "rarity": "epic"
+      },
+      {
+        "id": "figure-ly-thuong-kiet",
+        "name": "Lý Thường Kiệt (1019-1105)",
+        "description": "Nhà quân sự, nhà chính trị kiệt xuất thời nhà Lý. Người chỉ huy cuộc kháng chiến chống Tống (1075-1077) thắng lợi, tác giả bài thơ \"Nam quốc sơn hà\".",
+        "image": "/images/figures/ly-thuong-kiet.jpg",
+        "rarity": "legendary"
+      },
+      {
+        "id": "figure-tran-nhan-tong",
+        "name": "Trần Nhân Tông (1258-1308)",
+        "description": "Vị vua anh minh nhà Trần, hai lần lãnh đạo quân dân Đại Việt kháng chiến chống quân Mông-Nguyên thắng lợi. Sau khi nhường ngôi, ông xuất gia tu hành, sáng lập Thiền phái Trúc Lâm Yên Tử.",
+        "image": "/images/figures/tran-nhan-tong.jpg",
+        "rarity": "legendary"
+      },
+      {
+        "id": "figure-tran-hung-dao",
+        "name": "Trần Hưng Đạo (1228-1300)",
+        "description": "Tên thật là Trần Quốc Tuấn, nhà quân sự thiên tài, Quốc công Tiết chế thời Trần. Lãnh đạo quân dân Đại Việt ba lần đánh tan quân xâm lược Mông - Nguyên.",
+        "image": "/images/figures/tran-hung-dao.jpg",
+        "rarity": "legendary"
+      },
+      {
+        "id": "figure-chu-van-an",
+        "name": "Chu Văn An (1292-1370)",
+        "description": "Nhà giáo, nhà nho lỗi lạc thời Trần, người thầy mẫu mực của nhiều thế hệ, nổi tiếng về sự chính trực, từng dâng \"Thất trảm sớ\" xin chém 7 gian thần. Được thờ tại Văn Miếu - Quốc Tử Giám.",
+        "image": "/images/figures/chu-van-an.jpg",
+        "rarity": "rare"
+      },
+      {
+        "id": "figure-le-loi",
+        "name": "Lê Lợi (Lê Thái Tổ, 1385-1433)",
+        "description": "Lãnh tụ cuộc khởi nghĩa Lam Sơn, đánh đuổi quân Minh, sáng lập nhà Hậu Lê.",
+        "image": "/images/figures/le-loi.jpg",
+        "rarity": "epic"
+      },
+      {
+        "id": "figure-nguyen-trai",
+        "name": "Nguyễn Trãi (1380-1442)",
+        "description": "Nhà chính trị, nhà quân sự, nhà văn hóa lỗi lạc. Khai quốc công thần nhà Hậu Lê, tác giả \"Bình Ngô đại cáo\".",
+        "image": "/images/figures/nguyen-trai.jpg",
+        "rarity": "epic"
+      },
+      {
+        "id": "figure-le-thanh-tong",
+        "name": "Lê Thánh Tông (1442-1497)",
+        "description": "Vị vua anh minh bậc nhất thời Hậu Lê, có công lớn trong việc xây dựng và phát triển đất nước Đại Việt hùng mạnh, ban hành bộ Luật Hồng Đức, mở mang bờ cõi và phát triển văn hóa, giáo dục.",
+        "image": "/images/figures/le-thanh-tong.jpg",
+        "rarity": "epic"
+      },
+      {
+        "id": "figure-quang-trung",
+        "name": "Quang Trung - Nguyễn Huệ (1753-1792)",
+        "description": "Anh hùng áo vải, nhà quân sự thiên tài, lãnh đạo phong trào Tây Sơn, đánh đổ các thế lực phong kiến Trịnh, Nguyễn, Lê, đại phá quân Xiêm, quân Thanh, thống nhất đất nước.",
+        "image": "/images/figures/quang-trung.jpg",
+        "rarity": "legendary"
+      },
+      {
+        "id": "figure-nguyen-du",
+        "name": "Nguyễn Du (1766–1820)",
+        "description": "Đại thi hào dân tộc, Danh nhân văn hóa thế giới. Tác giả của kiệt tác 'Truyện Kiều', một tác phẩm đỉnh cao của văn học cổ điển Việt Nam.",
+        "image": "/images/figures/nguyen-du.jpg",
+        "rarity": "epic"
+      },
+      {
+        "id": "figure-phan-boi-chau",
+        "name": "Phan Bội Châu (1867-1940)",
+        "description": "Nhà yêu nước, nhà cách mạng tiêu biểu đầu thế kỷ 20, chủ trương dùng bạo động vũ trang để giành độc lập, thành lập Duy Tân hội, phát động phong trào Đông Du.",
+        "image": "/images/figures/phan-boi-chau.jpg",
+        "rarity": "rare"
+      },
+      {
+        "id": "figure-phan-chu-trinh",
+        "name": "Phan Chu Trinh (1872-1926)",
+        "description": "Nhà yêu nước, nhà cải cách theo xu hướng ôn hòa, chủ trương khai dân trí, chấn dân khí, hậu dân sinh, dựa vào Pháp để cải cách.",
+        "image": "/images/figures/phan-chu-trinh.jpg",
+        "rarity": "rare"
+      },
+      {
+        "id": "figure-hoang-hoa-tham",
+        "name": "Hoàng Hoa Thám (1858-1913)",
+        "description": "Thủ lĩnh của cuộc khởi nghĩa Yên Thế kéo dài gần 30 năm chống thực dân Pháp cuối thế kỷ 19, đầu thế kỷ 20, được mệnh danh là 'Hùm thiêng Yên Thế'.",
+        "image": "/images/figures/hoang-hoa-tham.jpg",
+        "rarity": "rare"
+      },
+      {
+        "id": "figure-ho-chi-minh",
+        "name": "Hồ Chí Minh (1890-1969)",
+        "description": "Vị lãnh tụ vĩ đại của dân tộc Việt Nam, người sáng lập Đảng Cộng sản Việt Nam, khai sinh nước Việt Nam Dân chủ Cộng hòa. Anh hùng giải phóng dân tộc, danh nhân văn hóa thế giới.",
+        "image": "/images/figures/ho-chi-minh.jpg",
+        "rarity": "legendary"
+      },
+      {
+        "id": "figure-vo-nguyen-giap",
+        "name": "Võ Nguyên Giáp (1911-2013)",
+        "description": "Đại tướng, Tổng Tư lệnh Quân đội Nhân dân Việt Nam. Nhà quân sự kiệt xuất, chỉ huy nhiều chiến dịch lớn, đặc biệt là chiến thắng Điện Biên Phủ (1954) và Chiến dịch Hồ Chí Minh (1975).",
+        "image": "/images/figures/vo-nguyen-giap.jpg",
+        "rarity": "legendary"
+      }
+    ],
+    "obtainedItemIds": {}
+  },
+  {
+    "id": "collection-historical-events-commemorations",
+    "title": "Sự kiện và Ngày kỷ niệm Lịch sử",
+    "allPossibleItems": [
+      {
+        "id": "event-hung-kings-commemoration",
+        "name": "Giỗ Tổ Hùng Vương (Mùng 10 tháng 3 Âm lịch)",
+        "description": "Ngày lễ trọng đại của dân tộc, tưởng nhớ công ơn các Vua Hùng đã có công dựng nước và giữ nước. Cơ hội tìm hiểu về cội nguồn dân tộc và Tín ngưỡng thờ cúng Hùng Vương, một Di sản văn hóa phi vật thể của nhân loại.",
+        "image": "/images/events/hung-kings-commemoration.jpg",
+        "rarity": "event",
+        "date_info": "Mùng 10 tháng 3 Âm lịch hàng năm"
+      },
+      {
+        "id": "event-reunification-day",
+        "name": "Tìm hiểu về Ngày Giải phóng miền Nam, thống nhất đất nước (30/4)",
+        "description": "Kỷ niệm sự kiện lịch sử trọng đại ngày 30/4/1975, kết thúc Chiến tranh Việt Nam, non sông thu về một mối. Tìm hiểu về diễn biến Chiến dịch Hồ Chí Minh lịch sử và ý nghĩa to lớn của ngày thống nhất.",
+        "image": "/images/events/reunification-day-30-4.jpg",
+        "rarity": "event",
+        "date_info": "Hoạt động tìm hiểu dịp 30 tháng 4 hàng năm"
+      },
+      {
+        "id": "event-national-day",
+        "name": "Tìm hiểu về Ngày Quốc khánh (2/9)",
+        "description": "Kỷ niệm ngày 2/9/1945, Chủ tịch Hồ Chí Minh đọc Tuyên ngôn Độc lập tại Quảng trường Ba Đình, khai sinh nước Việt Nam Dân chủ Cộng hòa (nay là Cộng hòa Xã hội chủ nghĩa Việt Nam). Tìm hiểu về bối cảnh lịch sử và ý nghĩa của bản Tuyên ngôn.",
+        "image": "/images/events/national-day-2-9.jpg",
+        "rarity": "event",
+        "date_info": "Hoạt động tìm hiểu dịp 2 tháng 9 hàng năm"
+      },
+      {
+        "id": "event-war-invalids-martyrs-day",
+        "name": "Hoạt động 'Uống nước nhớ nguồn' - Ngày Thương binh Liệt sĩ (27/7)",
+        "description": "Ngày toàn dân thể hiện lòng biết ơn sâu sắc, tri ân các anh hùng liệt sĩ, thương binh, bệnh binh và người có công với cách mạng đã hy sinh xương máu vì độc lập, tự do của Tổ quốc. Tìm hiểu về các tấm gương anh hùng và chính sách đền ơn đáp nghĩa.",
+        "image": "/images/events/war-invalids-martyrs-day-27-7.jpg",
+        "rarity": "event",
+        "date_info": "Hoạt động tìm hiểu dịp 27 tháng 7 hàng năm"
+      },
+      {
+        "id": "event-tet-history",
+        "name": "Tết Nguyên Đán và những dấu ấn lịch sử",
+        "description": "Tìm hiểu về Tết cổ truyền của dân tộc và những sự kiện lịch sử quan trọng diễn ra vào dịp Tết, như chiến thắng Ngọc Hồi - Đống Đa của vua Quang Trung (Xuân Kỷ Dậu 1789) hay cuộc Tổng tiến công và nổi dậy Xuân Mậu Thân 1968.",
+        "image": "/images/events/tet-history.jpg",
+        "rarity": "event",
+        "date_info": "Dịp Tết Nguyên Đán hàng năm"
+      },
+      {
+        "id": "event-teachers-day-tradition",
+        "name": "Ngày Nhà giáo Việt Nam (20/11) và Truyền thống Tôn sư trọng đạo",
+        "description": "Tôn vinh các nhà giáo và tìm hiểu về truyền thống hiếu học, tôn sư trọng đạo lâu đời của dân tộc Việt Nam, từ thời Văn Miếu - Quốc Tử Giám đến những đóng góp của ngành giáo dục trong các giai đoạn lịch sử.",
+        "image": "/images/events/teachers-day-tradition.jpg",
+        "rarity": "event",
+        "date_info": "Hoạt động tìm hiểu dịp 20 tháng 11 hàng năm"
+      },
+      {
+        "id": "event-dien-bien-phu-on-may-7",
+        "name": "Kỷ niệm Chiến thắng Điện Biên Phủ (7/5)",
+        "description": "Tìm hiểu về Chiến thắng Điện Biên Phủ lừng lẫy năm châu, chấn động địa cầu (7/5/1954). Nghiên cứu về tài thao lược quân sự, tinh thần quyết chiến quyết thắng và ý nghĩa lịch sử của chiến thắng này đối với cuộc kháng chiến chống Pháp.",
+        "image": "/images/events/dien-bien-phu-may-7.jpg",
+        "rarity": "event",
+        "date_info": "Hoạt động tìm hiểu dịp 7 tháng 5 hàng năm"
+      },
+      {
+        "id": "event-april-30-reunification-2025",
+        "name": "Kỷ niệm 50 năm Giải phóng miền Nam, thống nhất đất nước (30/4/2025)",
+        "description": "Kỷ niệm 50 năm Ngày Giải phóng miền Nam, thống nhất đất nước (30/4/1975 - 30/4/2025). Tìm hiểu về Chiến dịch Hồ Chí Minh lịch sử và ý nghĩa của ngày thống nhất.",
+        "image": "/images/events/reunification-day-50-years.jpg",
+        "rarity": "event",
+        "date_info": "Hoạt động tìm hiểu dịp 30 tháng 4, đặc biệt năm 2025"
+      }
+    ],
+    "obtainedItemIds": {}
+  },
+  {
+    "id": "collection-historic-places",
+    "title": "Địa danh Lịch sử Nổi tiếng",
+    "allPossibleItems": [
+      {
+        "id": "place-van-mieu-quoc-tu-giam",
+        "name": "Văn Miếu - Quốc Tử Giám (Hà Nội)",
+        "description": "Trường đại học đầu tiên của Việt Nam, biểu tượng của nền văn hiến và truyền thống hiếu học lâu đời của dân tộc. Được xây dựng từ thời Lý (1070).",
+        "image": "/images/places/van-mieu-quoc-tu-giam.jpg",
+        "rarity": "epic"
+      },
+      {
+        "id": "place-hoang-thanh-thang-long",
+        "name": "Hoàng thành Thăng Long (Hà Nội)",
+        "description": "Quần thể di tích gắn liền với lịch sử kinh thành Thăng Long - Đông Kinh - Hà Nội qua nhiều triều đại, được UNESCO công nhận là Di sản Văn hóa Thế giới.",
+        "image": "/images/places/hoang-thanh-thang-long.jpg",
+        "rarity": "legendary"
+      },
+      {
+        "id": "place-co-do-hoa-lu",
+        "name": "Cố đô Hoa Lư (Ninh Bình)",
+        "description": "Kinh đô đầu tiên của nhà nước phong kiến trung ương tập quyền ở Việt Nam, gắn liền với triều đại Đinh (968-980) và Tiền Lê (980-1009).",
+        "image": "/images/places/co-do-hoa-lu.jpg",
+        "rarity": "rare"
+      },
+      {
+        "id": "place-kinh-thanh-hue",
+        "name": "Kinh thành Huế (Thừa Thiên Huế)",
+        "description": "Trung tâm chính trị, văn hóa của triều Nguyễn (1802-1945), một Di sản Văn hóa Thế giới với nhiều công trình kiến trúc cung đình độc đáo như Ngọ Môn, Điện Thái Hòa, Lăng tẩm các vua Nguyễn.",
+        "image": "/images/places/kinh-thanh-hue.jpg",
+        "rarity": "epic"
+      },
+      {
+        "id": "place-thanh-dia-my-son",
+        "name": "Thánh địa Mỹ Sơn (Quảng Nam)",
+        "description": "Quần thể đền tháp Chăm Pa cổ kính từ thế kỷ 4 đến thế kỷ 13, một Di sản Văn hóa Thế giới, phản ánh một giai đoạn lịch sử và văn hóa Chăm Pa rực rỡ.",
+        "image": "/images/places/thanh-dia-my-son.jpg",
+        "rarity": "rare"
+      },
+      {
+        "id": "place-dia-dao-cu-chi",
+        "name": "Địa đạo Củ Chi (TP. Hồ Chí Minh)",
+        "description": "Hệ thống phòng thủ dưới lòng đất dài hơn 200km, biểu tượng cho cuộc kháng chiến kiên cường của quân và dân Việt Nam trong Chiến tranh Đông Dương và Chiến tranh Việt Nam.",
+        "image": "/images/places/dia-dao-cu-chi.jpg",
+        "rarity": "epic"
+      },
+      {
+        "id": "place-nha-tu-con-dao",
+        "name": "Nhà tù Côn Đảo (Bà Rịa - Vũng Tàu)",
+        "description": "Nơi thực dân Pháp và đế quốc Mỹ giam giữ, tra tấn tù nhân chính trị qua nhiều thời kỳ, minh chứng cho tinh thần bất khuất của các chiến sĩ cách mạng.",
+        "image": "/images/places/nha-tu-con-dao.jpg",
+        "rarity": "rare"
+      },
+      {
+        "id": "place-dinh-doc-lap",
+        "name": "Dinh Độc Lập / Hội trường Thống Nhất (TP. Hồ Chí Minh)",
+        "description": "Nơi ghi dấu sự kiện lịch sử giải phóng miền Nam, thống nhất đất nước ngày 30/4/1975. Trước đó là Phủ Toàn quyền Đông Dương và Dinh Tổng thống Việt Nam Cộng hòa.",
+        "image": "/images/places/dinh-doc-lap.jpg",
+        "rarity": "rare"
+      },
+      {
+        "id": "place-khu-di-tich-pac-bo",
+        "name": "Khu di tích Pác Bó (Cao Bằng)",
+        "description": "Nơi Chủ tịch Hồ Chí Minh về nước ngày 28/01/1941, trực tiếp lãnh đạo cách mạng sau 30 năm hoạt động ở nước ngoài, gắn liền với hang Cốc Bó, suối Lê Nin, núi Các Mác.",
+        "image": "/images/places/khu-di-tich-pac-bo.jpg",
+        "rarity": "epic"
+      },
+      {
+        "id": "place-cau-hien-luong-song-ben-hai",
+        "name": "Cầu Hiền Lương - Sông Bến Hải (Quảng Trị)",
+        "description": "Giới tuyến quân sự tạm thời chia cắt hai miền Nam - Bắc Việt Nam từ năm 1954 đến 1975 theo Hiệp định Genève, biểu tượng của nỗi đau chia cắt và khát vọng thống nhất.",
+        "image": "/images/places/cau-hien-luong-song-ben-hai.jpg",
+        "rarity": "rare"
+      },
+      {
+        "id": "place-thanh-nha-ho",
+        "name": "Thành nhà Hồ (Thanh Hóa)",
+        "description": "Kinh đô của nước Đại Ngu (1400-1407) do Hồ Quý Ly xây dựng, một công trình kiến trúc đá độc đáo, được UNESCO công nhận là Di sản Văn hóa Thế giới.",
+        "image": "/images/places/thanh-nha-ho.jpg",
+        "rarity": "rare"
+      },
+      {
+        "id": "place-ben-nha-rong",
+        "name": "Bến Nhà Rồng (TP. Hồ Chí Minh)",
+        "description": "Nơi người thanh niên Nguyễn Tất Thành (Chủ tịch Hồ Chí Minh) ra đi tìm đường cứu nước vào ngày 5/6/1911. Hiện là Bảo tàng Hồ Chí Minh - Chi nhánh TP. Hồ Chí Minh.",
+        "image": "/images/places/ben-nha-rong.jpg",
+        "rarity": "common"
+      }
+    ],
+    "obtainedItemIds": {}
+  }
+]

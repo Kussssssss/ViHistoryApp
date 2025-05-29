@@ -4,16 +4,24 @@ export interface HistoricalEra {
   description: string;
   startYear: number;
   endYear: number;
-  periods: HistoricalPeriod[];
+  periods: HistoricalPeriod[]; // This is populated by the service
   unlocked: boolean;
   completed: boolean;
   achievements?: Achievement[];
+
+  // New/Updated fields from eras.json
+  image?: string;
+  audio?: string;
+  difficulty?: 'easy' | 'medium' | 'hard';
   rewards?: {
     experience: number;
-    coins: number;
     items: string[];
-    badges: string[];
+    // Optional if they can come from other sources or for future use
+    coins?: number; 
+    badges?: string[];
   };
+  dataFile?: string; // Path to CSV file for this era's content (metadata for now)
+
   progress?: {
     completedPeriods: number;
     totalPeriods: number;
@@ -34,7 +42,7 @@ export interface HistoricalPeriod {
     experience: number;
     coins: number;
   };
-  image?: string;
+  image?: string; // Existing: an image specific to a period
 }
 
 export interface HistoricalContent {
@@ -89,29 +97,48 @@ export interface QuizQuestion {
   difficulty: 'easy' | 'medium' | 'hard';
 }
 
+// Challenge interface as used in HistoricalDataService
 export interface Challenge {
   id: string;
   title: string;
   description: string;
-  type: 'daily' | 'weekly';
+  type: 'daily' | 'weekly'; // Limited to these based on usage
   requirements: {
-    current: number;
+    action?: string; // Added for explicitness based on example data
     target: number;
+    current: number;
   };
-  completed: boolean;
   rewards: {
     experience: number;
     coins: number;
+    items?: string[];   // Added for explicitness
+    badges?: string[];  // Added for explicitness
   };
+  completed: boolean;
 }
 
+// Achievement interface as used in HistoricalDataService
 export interface Achievement {
   id: string;
   title: string;
   description: string;
+  type?: 'progress' | 'collection'; // Added for explicitness
   rarity: 'common' | 'rare' | 'epic' | 'legendary';
-  unlockedAt: string;
+  requirements?: { // Added for explicitness
+    action: string;
+    target: number;
+    current: number;
+  };
+  rewards?: { // Added for explicitness
+    experience: number;
+    coins: number;
+    items: string[];
+    badges: string[];
+  };
+  unlocked: boolean;
+  unlockedAt: string; 
 }
+
 
 export interface CSVRow {
   heading: string;
@@ -119,6 +146,13 @@ export interface CSVRow {
   type?: 'era' | 'period' | 'event' | 'dynasty' | 'person' | 'battle';
   year?: number;
   content?: string;
+  // Added from HistoricalEvent interface for CSV parsing
+  id?: string; 
+  question?: string;
+  answer?: string;
+  period?: string; // period name from CSV
+  description?: string; // description from CSV
+  index?: number; // 'index' column used as year in CSV parsing logic
 }
 
 export interface HistoricalEvent {
@@ -128,6 +162,7 @@ export interface HistoricalEvent {
   question?: string;
   answer?: string;
   year?: number;
-  period: string;
-  type?: string;
+  period: string; // Name of the period this event belongs to
+  type?: string; // E.g. 'event', 'battle', 'person' if available from data
+  description?: string; // Added from service logic
 } 
