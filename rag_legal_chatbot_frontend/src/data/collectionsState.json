@@ -1,0 +1,146 @@
+{
+  "events": [
+    {
+      "id": "event-1",
+      "name": "Chiến thắng Bạch Đằng 938",
+      "type": "event",
+      "imageUrl": "/images/events/bach-dang-victory.jpg",
+      "period": "938",
+      "eventId": "event-1",
+      "rarity": "legendary",
+      "description": "Chiến thắng vĩ đại của Ngô Quyền đánh bại quân Nam Hán trên sông Bạch Đằng, mở ra kỷ nguyên độc lập tự chủ cho dân tộc Việt Nam",
+      "unlocked": true,
+      "unlockedAt": "2024-03-15"
+    },
+    {
+      "id": "event-2",
+      "name": "Đại thắng Mùa Xuân 1975",
+      "type": "event",
+      "imageUrl": "/images/events/spring-victory.jpg",
+      "period": "1975",
+      "eventId": "event-2",
+      "rarity": "legendary",
+      "description": "Chiến dịch Hồ Chí Minh lịch sử, giải phóng hoàn toàn miền Nam, thống nhất đất nước",
+      "unlocked": false
+    },
+    {
+      "id": "event-3",
+      "name": "Cách mạng Tháng Tám 1945",
+      "type": "event",
+      "imageUrl": "/images/events/august-revolution.jpg",
+      "period": "1945",
+      "eventId": "event-3",
+      "rarity": "legendary",
+      "description": "Cuộc cách mạng vĩ đại đánh dấu sự ra đời của nước Việt Nam Dân chủ Cộng hòa",
+      "unlocked": false
+    }
+  ],
+  "characters": [
+    {
+      "id": "char-1",
+      "name": "Ngô Quyền",
+      "type": "character",
+      "imageUrl": "/images/characters/ngo-quyen.jpg",
+      "period": "898-944",
+      "eventId": "event-1",
+      "rarity": "legendary",
+      "description": "Vị vua đầu tiên của nhà Ngô, người đánh bại quân Nam Hán trên sông Bạch Đằng, mở ra kỷ nguyên độc lập tự chủ",
+      "unlocked": true,
+      "unlockedAt": "2024-03-15"
+    },
+    {
+      "id": "char-2",
+      "name": "Trần Hưng Đạo",
+      "type": "character",
+      "imageUrl": "/images/characters/tran-hung-dao.jpg",
+      "period": "1228-1300",
+      "eventId": "event-4",
+      "rarity": "legendary",
+      "description": "Đại tướng tài ba, người lãnh đạo quân dân Đại Việt đánh bại quân Nguyên Mông xâm lược",
+      "unlocked": false
+    },
+    {
+      "id": "char-3",
+      "name": "Lê Lợi",
+      "type": "character",
+      "imageUrl": "/images/characters/le-loi.jpg",
+      "period": "1385-1433",
+      "eventId": "event-5",
+      "rarity": "legendary",
+      "description": "Vị vua sáng lập nhà Lê, lãnh đạo cuộc khởi nghĩa Lam Sơn đánh đuổi quân Minh",
+      "unlocked": false
+    }
+  ],
+  "locations": [
+    {
+      "id": "loc-1",
+      "name": "Sông Bạch Đằng",
+      "type": "location",
+      "imageUrl": "/images/locations/bach-dang-river.jpg",
+      "period": "938",
+      "eventId": "event-1",
+      "rarity": "rare",
+      "description": "Nơi diễn ra trận đánh lịch sử năm 938, nơi Ngô Quyền đánh bại quân Nam Hán",
+      "unlocked": true,
+      "unlockedAt": "2024-03-15"
+    },
+    {
+      "id": "loc-2",
+      "name": "Thành Cổ Loa",
+      "type": "location",
+      "imageUrl": "/images/locations/co-loa-citadel.jpg",
+      "period": "257 TCN",
+      "eventId": "event-6",
+      "rarity": "rare",
+      "description": "Kinh đô của nước Âu Lạc thời An Dương Vương, nổi tiếng với tường thành hình xoắn ốc",
+      "unlocked": false
+    },
+    {
+      "id": "loc-3",
+      "name": "Đền Hùng",
+      "type": "location",
+      "imageUrl": "/images/locations/hung-temple.jpg",
+      "period": "Thời Hùng Vương",
+      "eventId": "event-7",
+      "rarity": "rare",
+      "description": "Nơi thờ cúng các vua Hùng, tổ tiên của dân tộc Việt Nam",
+      "unlocked": false
+    }
+  ],
+  "artifacts": [
+    {
+      "id": "art-1",
+      "name": "Cọc Bạch Đằng",
+      "type": "artifact",
+      "imageUrl": "/images/artifacts/bach-dang-stakes.jpg",
+      "period": "938",
+      "eventId": "event-1",
+      "rarity": "rare",
+      "description": "Những cọc gỗ được đóng xuống lòng sông để đánh bại quân Nam Hán",
+      "unlocked": true,
+      "unlockedAt": "2024-03-15"
+    },
+    {
+      "id": "art-2",
+      "name": "Trống Đồng Đông Sơn",
+      "type": "artifact",
+      "imageUrl": "/images/artifacts/dong-son-drum.jpg",
+      "period": "Thời Đông Sơn",
+      "eventId": "event-8",
+      "rarity": "legendary",
+      "description": "Di vật văn hóa tiêu biểu của nền văn minh Đông Sơn, biểu tượng của văn hóa Việt cổ",
+      "unlocked": false
+    },
+    {
+      "id": "art-3",
+      "name": "Bản đồ Hồng Đức",
+      "type": "artifact",
+      "imageUrl": "/images/artifacts/hong-duc-map.jpg",
+      "period": "1490",
+      "eventId": "event-9",
+      "rarity": "rare",
+      "description": "Bản đồ cổ nhất của Việt Nam, được vẽ dưới thời vua Lê Thánh Tông",
+      "unlocked": false
+    }
+  ]
+}
