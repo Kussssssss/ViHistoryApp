@@ -1,9 +1,8 @@
 import { HistoricalEra, HistoricalPeriod, HistoricalContent, Challenge, Achievement, HistoricalEvent } from '../types/historicalData';
 import { parse as parseCSV } from 'papaparse';
-// import fs from 'fs'; // Removed unused import
 import { MAIN_PERIODS_CONFIG } from '../components/Explore';
+import { STATIC_HISTORICAL_EVENTS } from '../data/staticEvents'; // NEW: Import static events
 
-// Interface for the structure of items in MAIN_PERIODS_CONFIG
 interface MainPeriodConfigItem {
   id: string;
   name: string;
@@ -12,7 +11,6 @@ interface MainPeriodConfigItem {
   rewards: { experience: number; coins: number; };
 }
 
-// Update the CSV row interface to match actual data structure
 interface CSVRow {
   index: number;
   period: string;
@@ -59,34 +57,36 @@ export class HistoricalDataService {
     console.log('HistoricalDataService: Starting data load...');
 
     try {
+      let loadedEvents: HistoricalEvent[] = [];
+
       // First try to load processed data
       const processedData = await this.loadProcessedData();
       if (processedData) {
-        this.allEvents = processedData.events;
+        loadedEvents = processedData.events;
         this.lastUpdated = processedData.lastUpdated;
-        console.log('HistoricalDataService: Loaded processed data with', this.allEvents.length, 'events');
+        console.log('HistoricalDataService: Loaded processed data with', loadedEvents.length, 'events');
       } else {
         // Fallback to loading from chunks
         const chunkFiles = await this.listChunkFiles();
         console.log('HistoricalDataService: Found chunk files:', chunkFiles);
 
-        this.allEvents = [];
         for (const file of chunkFiles) {
           const chunkEvents = await this.loadEventsFromChunk(file);
           console.log(`HistoricalDataService: Loaded ${chunkEvents.length} events from ${file}`);
-          this.allEvents.push(...chunkEvents);
+          loadedEvents.push(...chunkEvents);
         }
-        console.log('HistoricalDataService: Total events loaded from all chunks:', this.allEvents.length);
+        console.log('HistoricalDataService: Total events loaded from all chunks:', loadedEvents.length);
       }
+
+      // NEW: Add static events to the loaded events
+      this.allEvents = [...loadedEvents, ...STATIC_HISTORICAL_EVENTS];
+      console.log('HistoricalDataService: Added static events. Total events now:', this.allEvents.length);
+
 
       // Initialize periods first
       this.periods = this.groupEventsIntoPeriods(this.allEvents);
       console.log('HistoricalDataService: Grouped events into periods. Number of periods:', this.periods.length);
-
-      // Add test event for Hai Ba Trung after periods are initialized
-      this.addHaiBaTrungEvent();
-      console.log('HistoricalDataService: Added Hai Ba Trung test event');
-
+      
       this.loadChallenges();
       this.loadAchievements();
 
@@ -127,19 +127,19 @@ export class HistoricalDataService {
       // In a browser environment, we'll fetch a manifest file that lists all available chunks
       const manifestPath = `${CHUNKS_BASE_PATH}manifest.json`;
       const response = await fetch(manifestPath);
-      
+
       if (!response.ok) {
         throw new Error(`Failed to fetch manifest: ${response.statusText}`);
       }
 
       const manifest = await response.json();
-      
+
       if (!Array.isArray(manifest.chunks)) {
         throw new Error('Invalid manifest format: chunks array not found');
       }
 
       // Map chunk names to full paths
-      const chunkFiles = manifest.chunks.map((chunk: string) => 
+      const chunkFiles = manifest.chunks.map((chunk: string) =>
         `${CHUNKS_BASE_PATH}${chunk}`
       );
 
@@ -147,7 +147,7 @@ export class HistoricalDataService {
       return chunkFiles;
     } catch (error) {
       console.error('HistoricalDataService: Error loading chunk manifest:', error);
-      
+
       // Fallback to default chunks if manifest loading fails
       console.warn('HistoricalDataService: Using fallback chunk list');
       return [
@@ -179,6 +179,11 @@ export class HistoricalDataService {
     return null;
   }
 
+  // NOTE: This generateQuestionsFromEvent is much more detailed than generateBasicQuestions.
+  // You might want to unify them or decide which one to use based on your data source.
+  // For CSV data, generateBasicQuestions might be sufficient if the raw data is simple.
+  // For hand-crafted events, the detailed version is better.
+  // For now, generateBasicQuestions is called for CSV events, and static events have pre-defined questions.
   private generateQuestionsFromEvent(event: HistoricalEvent): {
     question: string;
     options: string[];
@@ -249,22 +254,25 @@ export class HistoricalDataService {
     }
 
     // Question 4: Description understanding
-    const descriptionSentences = event.description.split(/[.!?]+/).filter(s => s.trim().length > 0);
-    if (descriptionSentences.length > 0) {
-      const mainDescription = descriptionSentences[0].trim();
-      const descriptionOptions = [
-        mainDescription,
-        'Không có mô tả',
-        'Không xác định',
-        'Không có thông tin'
-      ].sort(() => Math.random() - 0.5);
-      questions.push({
-        question: `Mô tả nào sau đây đúng về sự kiện "${event.heading}"?`,
-        options: descriptionOptions,
-        correctAnswer: descriptionOptions.indexOf(mainDescription),
-        explanation: ''
-      });
+    if (event.description && event.description.length > 0) { // Check if description exists
+      const descriptionSentences = event.description.split(/[.!?]+/).filter(s => s.trim().length > 0);
+      if (descriptionSentences.length > 0) {
+        const mainDescription = descriptionSentences[0].trim();
+        const descriptionOptions = [
+          mainDescription,
+          'Không có mô tả',
+          'Không xác định',
+          'Không có thông tin'
+        ].sort(() => Math.random() - 0.5);
+        questions.push({
+          question: `Mô tả nào sau đây đúng về sự kiện "${event.heading}"?`,
+          options: descriptionOptions,
+          correctAnswer: descriptionOptions.indexOf(mainDescription),
+          explanation: ''
+        });
+      }
     }
+
 
     // Question 5: Related characters or locations
     if (event.characters && event.characters.length > 0) {
@@ -308,7 +316,7 @@ export class HistoricalDataService {
       }
 
       const csvText = await response.text();
-      console.log(`HistoricalDataService: Raw CSV content from ${filePath}:`, csvText.substring(0, 200) + '...');
+      // console.log(`HistoricalDataService: Raw CSV content from ${filePath}:`, csvText.substring(0, 200) + '...'); // Too verbose for production
 
       const events: HistoricalEvent[] = [];
 
@@ -327,15 +335,14 @@ export class HistoricalDataService {
       console.log(`HistoricalDataService: Parsed ${data.length} rows from ${filePath}`);
 
       // Create a map to store unique contexts for each heading
-      const headingContextMap = new Map<string, Set<string>>();
+      const headingDataMap = new Map<string, { contexts: Set<string>; period: string; year: number | undefined; type: string; }>();
 
-      // First pass: collect all unique contexts for each heading
       data.forEach((row, index) => {
         const heading = row.heading;
         const context = row.context;
         const period = row.period;
 
-        // Log the first few rows for debugging
+        // Log the first few rows for debugging (consider removing for production)
         if (index < 3) {
           console.log(`HistoricalDataService: Processing row ${index}:`, {
             heading,
@@ -354,31 +361,25 @@ export class HistoricalDataService {
           return;
         }
 
-        // Extract year from period
         const year = this.extractYearFromPeriod(period);
-        console.log(`HistoricalDataService: Extracted year from period "${period}":`, year);
 
-        // Add to heading context map
-        if (!headingContextMap.has(heading)) {
-          headingContextMap.set(heading, new Set());
+        if (!headingDataMap.has(heading)) {
+          headingDataMap.set(heading, { contexts: new Set(), period: period, year: year, type: 'other' }); // Default type to 'other'
         }
-        headingContextMap.get(heading)?.add(context);
+        headingDataMap.get(heading)?.contexts.add(context);
       });
 
-      // Second pass: create events from unique headings
-      for (const [heading, contexts] of headingContextMap) {
+      for (const [heading, { contexts, period, year, type }] of headingDataMap) {
         const combinedContext = Array.from(contexts).join('\n\n');
-        const period = data.find(row => row.heading === heading)?.period || '';
-        const year = this.extractYearFromPeriod(period);
-        
+
         const event: HistoricalEvent = {
-          id: `event-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+          id: `event-${heading.replace(/\s+/g, '-')}-${Math.random().toString(36).substr(2, 4)}`, // More unique ID
           heading: heading,
           context: combinedContext,
-          description: '', // We don't need description for now
-          year: year || undefined,
+          description: '', // If CSV doesn't provide description, leave empty or derive.
+          year: year,
           period: period,
-          type: 'other',
+          type: type as HistoricalEvent['type'], // Cast to ensure type safety. You might need a more sophisticated mapping for types.
           characters: undefined,
           locations: undefined,
           artifacts: undefined,
@@ -387,17 +388,17 @@ export class HistoricalDataService {
           hiddenImage: undefined
         };
 
-        // Generate basic questions
-        event.questions = this.generateBasicQuestions(event);
+        // Generate basic questions for CSV-parsed events
+        event.questions = this.generateBasicQuestions(event); // Using the simplified version for CSV
 
         events.push(event);
       }
 
       console.log(`HistoricalDataService: Processed ${events.length} unique events from ${filePath}`);
-      
-      // Log the first few events for debugging
+
+      // Log the first few events for debugging (consider removing for production)
       if (events.length > 0) {
-        console.log('HistoricalDataService: First few processed events:', 
+        console.log('HistoricalDataService: First few processed CSV events:',
           events.slice(0, 2).map(e => ({
             heading: e.heading,
             contextLength: e.context.length,
@@ -408,7 +409,8 @@ export class HistoricalDataService {
         );
       }
 
-      this.debugProcessedEvents(events);
+      // No longer need debugProcessedEvents here. It's for development.
+      // this.debugProcessedEvents(events);
 
       return events;
     } catch (error: unknown) {
@@ -417,6 +419,7 @@ export class HistoricalDataService {
     }
   }
 
+  // Simplified question generation for CSV data where details might be sparse
   private generateBasicQuestions(event: HistoricalEvent) {
     const questions = [];
 
@@ -428,34 +431,46 @@ export class HistoricalDataService {
           (event.year + 1).toString(),
           (event.year - 1).toString(),
           (event.year + 2).toString()
-        ],
-        correctAnswer: 0
+        ].sort(() => Math.random() - 0.5), // Shuffle options
+        correctAnswer: 0, // This will be wrong after shuffle, need to find index
+        explanation: `Sự kiện "${event.heading}" diễn ra vào năm ${event.year}.`
       });
+      // Correct the correctAnswer after shuffle
+      questions[questions.length - 1].correctAnswer = questions[questions.length - 1].options.indexOf(event.year.toString());
     }
 
-    if (event.type) {
+    if (event.type && event.type !== 'other') { // Only add if type is specific
+      const typeDisplay = event.type === 'battle' ? 'Trận đánh' :
+                          event.type === 'rebellion' ? 'Khởi nghĩa' :
+                          event.type === 'dynasty' ? 'Triều đại' :
+                          event.type === 'cultural' ? 'Văn hóa' : 'Khác';
+      const options = [
+        typeDisplay,
+        'Không xác định',
+        'Không có thông tin',
+        'Không thuộc nhóm nào'
+      ].sort(() => Math.random() - 0.5);
       questions.push({
         question: `Loại sự kiện "${event.heading}" thuộc nhóm nào?`,
-        options: [
-          event.type,
-          'Không xác định',
-          'Không có thông tin',
-          'Không thuộc nhóm nào'
-        ],
-        correctAnswer: 0
+        options: options,
+        correctAnswer: options.indexOf(typeDisplay),
+        explanation: `Sự kiện "${event.heading}" thuộc nhóm ${typeDisplay}.`
       });
     }
 
     if (event.context) {
+      const contextSnippet = event.context.length > 100 ? event.context.substring(0, 100) + '...' : event.context;
+      const options = [
+        contextSnippet,
+        'Không có bối cảnh',
+        'Không xác định',
+        'Không có thông tin'
+      ].sort(() => Math.random() - 0.5);
       questions.push({
         question: `Bối cảnh của sự kiện "${event.heading}" là gì?`,
-        options: [
-          event.context.substring(0, 100) + '...',
-          'Không có bối cảnh',
-          'Không xác định',
-          'Không có thông tin'
-        ],
-        correctAnswer: 0
+        options: options,
+        correctAnswer: options.indexOf(contextSnippet),
+        explanation: `Bối cảnh của sự kiện là: ${event.context}.`
       });
     }
 
@@ -464,10 +479,8 @@ export class HistoricalDataService {
 
   private groupEventsIntoPeriods(events: HistoricalEvent[]): HistoricalPeriod[] {
     console.log('HistoricalDataService: Starting to group events into periods. Total events:', events.length);
-    
-    // Create periods based on MAIN_PERIODS_CONFIG and populate with events
+
     const periods: HistoricalPeriod[] = MAIN_PERIODS_CONFIG.map((configPeriod: MainPeriodConfigItem) => {
-      // Parse the year range from the config period
       const configYearsMatch = configPeriod.years.match(/^(\d+)\s*–\s*(\d+)$/);
       let configStartYear = 0;
       let configEndYear = 0;
@@ -479,13 +492,14 @@ export class HistoricalDataService {
         console.warn(`HistoricalDataService: Could not parse year range for period config: ${configPeriod.years}`);
       }
 
-      // Find events that belong to this period based on year range
+      // Filter events that belong to this period based on year range OR period name
       const periodEvents = events.filter(event => {
-        if (event.year === undefined) {
-          // If year is undefined, try to match by period name
-          return event.period.toLowerCase().includes(configPeriod.name.toLowerCase());
+        if (event.year !== undefined) {
+          return event.year >= configStartYear && event.year <= configEndYear;
         }
-        return event.year >= configStartYear && event.year <= configEndYear;
+        // Fallback: If year is undefined, try to match by period name or ID
+        return event.period?.toLowerCase() === configPeriod.id.toLowerCase() ||
+               event.period?.toLowerCase().includes(configPeriod.name.toLowerCase());
       });
 
       console.log(`HistoricalDataService: Period '${configPeriod.name}' (${configPeriod.id}) has ${periodEvents.length} events.`);
@@ -496,13 +510,13 @@ export class HistoricalDataService {
         startYear: configStartYear,
         endYear: configEndYear,
         description: `Thông tin về thời kỳ ${configPeriod.name}`,
-        events: periodEvents,
+        events: periodEvents, // Events are assigned here during initial grouping
         difficulty: 'medium',
         unlocked: true,
         completed: false,
         rewards: configPeriod.rewards,
         color: configPeriod.color,
-        quests: [],
+        quests: [], // Quests can be generated dynamically later
         artifacts: [],
         characters: [],
         mapLocations: []
@@ -512,29 +526,9 @@ export class HistoricalDataService {
     return periods;
   }
 
-  // loadContents and loadQuizzes methods are likely redundant if quests are generated in Explore component
-  // Based on the Explore component's generateQuestsFromEvents, these might not be needed here.
-  /*
-  private async loadContents(): Promise<HistoricalContent[]> {
-    console.log('HistoricalDataService: Loading contents...');
-    // Transform events into contents (if needed separately from quests)
-    // ... implementation ...
-    console.log('HistoricalDataService: Loaded', 0, 'contents'); // Update count if implemented
-    return []; // Return actual contents if implemented
-  }
-
-  private async loadQuizzes(): Promise<Quiz[]> {
-    console.log('HistoricalDataService: Loading quizzes...');
-    // Create quizzes based on events (if needed separately from quests)
-    // ... implementation ...
-     console.log('HistoricalDataService: Loaded', 0, 'quizzes'); // Update count if implemented
-    return []; // Return actual quizzes if implemented
-  }
-  */
-
-  private loadChallenges(): void { // Changed to void as it's synchronous
+  private loadChallenges(): void {
     console.log('HistoricalDataService: Loading challenges...');
-    this.challenges = [ // Assign directly to this.challenges
+    this.challenges = [
       {
         id: 'daily-1',
         title: 'Học 3 bài học mới',
@@ -568,9 +562,9 @@ export class HistoricalDataService {
     console.log('HistoricalDataService: Loaded', this.challenges.length, 'challenges');
   }
 
-  private loadAchievements(): void { // Changed to void as it's synchronous
+  private loadAchievements(): void {
     console.log('HistoricalDataService: Loading achievements...');
-    this.achievements = [ // Assign directly to this.achievements
+    this.achievements = [
       {
         id: 'achievement-1',
         title: 'Nhà sử học mới',
@@ -584,7 +578,7 @@ export class HistoricalDataService {
           coins: 250
         },
         unlocked: false,
-        unlockedAt: '' // Consider using Date object or null
+        unlockedAt: ''
       },
       {
         id: 'achievement-2',
@@ -599,7 +593,7 @@ export class HistoricalDataService {
           coins: 500
         },
         unlocked: false,
-        unlockedAt: '' // Consider using Date object or null
+        unlockedAt: ''
       }
     ];
     console.log('HistoricalDataService: Loaded', this.achievements.length, 'achievements');
@@ -607,8 +601,7 @@ export class HistoricalDataService {
 
   // Getters
   getEras(): HistoricalEra[] {
-    // If you implement eras based on periods, generate them here
-    return []; // Placeholder
+    return []; // Placeholder - consider if you actually need 'eras' or if 'periods' are sufficient
   }
 
   getPeriods(): HistoricalPeriod[] {
@@ -616,14 +609,10 @@ export class HistoricalDataService {
   }
 
   getContents(): HistoricalContent[] {
-    // If you transform events into contents, return them here
-    // Currently, contents are not being loaded/generated in this service
-    return []; // Placeholder
+    return []; // Placeholder - if contents are separate from events/quests
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  getEraById(_id: string): HistoricalEra | undefined { // Fixed: prefixed with _ to indicate unused parameter
-    // If you implement eras, find them here
+  getEraById(_id: string): HistoricalEra | undefined {
     return undefined; // Placeholder
   }
 
@@ -631,10 +620,7 @@ export class HistoricalDataService {
     return this.periods.find(period => period.id === id);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  getContentById(_id: string): HistoricalContent | undefined { // Fixed: prefixed with _ to indicate unused parameter
-    // If you transform events into contents, find them here
-     // Currently, contents are not being loaded/generated in this service
+  getContentById(_id: string): HistoricalContent | undefined {
     return undefined; // Placeholder
   }
 
@@ -686,113 +672,30 @@ export class HistoricalDataService {
       }
     }
   }
-  
-  // Method to get a specific period by ID and load its content if not already loaded
-  // This approach loads ALL events for the period once requested.
-  // For very large periods spread across many chunks, a more advanced streaming/lazy loading might be needed.
+
   public async getPeriodWithEvents(periodId: string): Promise<HistoricalPeriod | undefined> {
       if (!this.isLoaded) {
-          await this.loadData(); // This loads the basic period structure and all events
+          await this.loadData();
       }
-
+      // Since groupEventsIntoPeriods already filters and assigns events to periods,
+      // we can just return the found period directly.
       const targetPeriod = this.periods.find(p => p.id === periodId);
-
+      // No need for a separate filter here if events are grouped correctly on load.
+      // If there's a possibility that `period.events` isn't fully populated,
+      // then you'd need the filter again.
+      // targetPeriod.events = this.allEvents.filter(event => event.period === periodId);
+      // However, the `groupEventsIntoPeriods` logic already does this.
       if (targetPeriod) {
-          console.log(`Filtering events for period: ${periodId}`);
-          // Filter events that belong to the target period from the allEvents array
-          targetPeriod.events = this.allEvents.filter(event => event.period === periodId);
-          console.log(`Found ${targetPeriod.events.length} events for period ${periodId}.`);
+          console.log(`HistoricalDataService: Retrieved period '${periodId}' with ${targetPeriod.events.length} events.`);
       } else {
-          console.warn(`Period with ID ${periodId} not found in loaded periods.`);
+          console.warn(`HistoricalDataService: Period with ID ${periodId} not found.`);
       }
-      
       return targetPeriod;
   }
 
-  // Keep getEventsByPeriod for compatibility if needed, but getPeriodWithEvents is preferred for loading.
   getEventsByPeriod(periodId: string): HistoricalEvent[] {
-     // This will only return events if they were already loaded by getPeriodWithEvents or loadData
      const period = this.periods.find(p => p.id === periodId);
      return period ? period.events : [];
   }
 
-  // Add this method after loadEventsFromChunk
-  private debugProcessedEvents(events: HistoricalEvent[]): void {
-    console.log('Debug: Processed Events Overview');
-    events.forEach(event => {
-      console.log(`\nHeading: ${event.heading}`);
-      console.log('Contexts:');
-      const contexts = event.context.split('\n\n');
-      contexts.forEach((context, index) => {
-        console.log(`${index + 1}. ${context.substring(0, 100)}...`);
-      });
-    });
-  }
-
-  // Add new historical event for Hai Bà Trưng uprising
-  private addHaiBaTrungEvent(): void {
-    const haiBaTrungEvent: HistoricalEvent = {
-      id: 'event_hai_ba_trung',
-      heading: 'Nước Âu Lạc đầu Công nguyên và Khởi nghĩa Hai Bà Trưng',
-      year: 40,
-      type: 'rebellion',
-      context: 'Đầu Công nguyên, nước Âu Lạc chịu sự đô hộ của nhà Hán. Chính quyền đô hộ truyền bá Nho giáo và lập trường học nhằm đào tạo tay sai bản địa. Tuy nhiên, chính sách cai trị ngày càng hà khắc, đặc biệt dưới thời Thái thú Tô Định (từ năm 34) nổi tiếng tham lam, tàn bạo, đã làm gia tăng mâu thuẫn. Tô Định áp bức kinh tế, thu hẹp quyền lực của Lạc hầu, Lạc tướng, và khủng bố người dân. Việc Tô Định giết Thi Sách, chồng bà Trưng Trắc (con gái Lạc tướng Mê Linh), đã trở thành nguyên nhân trực tiếp thổi bùng ngọn lửa khởi nghĩa.',
-      description: 'Mùa xuân năm Canh Tý (40 SCN), Hai Bà Trưng (Trưng Trắc và Trưng Nhị) phất cờ khởi nghĩa tại cửa sông Hát (Mê Linh), nhận được sự hưởng ứng rộng rãi của nhân dân các quận Giao Chỉ, Cửu Chân, Nhật Nam, Hợp Phố. Lời thề của Hai Bà thể hiện ý chí giành lại non sông, báo thù nhà, nợ nước. Nghĩa quân nhanh chóng đánh chiếm các quận huyện, bao gồm cả thủ phủ Luy Lâu, buộc Tô Định phải bỏ chạy. Hai Bà chiếm được 65 thành (có thuyết nói 56 thành), Trưng Trắc xưng Vương, đóng đô ở Mê Linh, xá thuế cho dân trong 2 năm và ban hành luật lệ riêng, khẳng định nền độc lập tự chủ.\n\nNhà Hán cử Mã Viện, một lão tướng dày dạn kinh nghiệm, mang 2 vạn quân sang đàn áp. Quân Trưng Vương dù chiến đấu dũng cảm nhưng do chênh lệch lực lượng và kinh nghiệm, đã thất bại trong các trận đánh lớn như ở Lãng Bạc. Hai Bà lui về Cấm Khê cố thủ nhưng cuối cùng bị đánh bại và anh dũng hy sinh vào năm 43 (có truyền thuyết nói Hai Bà tuẫn tiết ở sông Hát). Dù cuộc khởi nghĩa thất bại, các tướng lĩnh và nhân dân vẫn tiếp tục chống cự ở nhiều nơi, đặc biệt là ở Cửu Chân dưới sự lãnh đạo của Đô Dương và Chu Bá, nhưng cuối cùng cũng bị Mã Viện đàn áp khốc liệt.\n\nCuộc khởi nghĩa Hai Bà Trưng là cuộc nổi dậy lớn đầu tiên của nhân dân ta chống lại ách đô hộ phương Bắc, khẳng định mạnh mẽ ý chí độc lập, tự chủ và vai trò to lớn của người phụ nữ Việt Nam trong lịch sử đấu tranh của dân tộc.',
-      period: 'period_1',
-      characters: ['Trưng Trắc', 'Trưng Nhị', 'Tô Định', 'Mã Viện', 'Thi Sách', 'Đô Dương', 'Chu Bá'],
-      locations: ['Mê Linh', 'Cửa sông Hát', 'Luy Lâu', 'Cấm Khê', 'Lãng Bạc'],
-      questions: [
-        {
-          question: 'Ai là Thái thú Giao Chỉ nổi tiếng gian tham, tàn bạo, mà hành động giết Thi Sách đã trở thành nguyên nhân trực tiếp dẫn đến cuộc khởi nghĩa Hai Bà Trưng?',
-          options: ['Tích Quang', 'Nhâm Diên', 'Tô Định', 'Mã Viện'],
-          correctAnswer: 2,
-          explanation: 'Tô Định là Thái thú Giao Chỉ từ năm 34, nổi tiếng tham lam, tàn bạo. Việc ông giết Thi Sách, chồng của Trưng Trắc, đã trở thành nguyên nhân trực tiếp dẫn đến cuộc khởi nghĩa.'
-        },
-        {
-          question: 'Hai Bà Trưng phất cờ khởi nghĩa vào mùa xuân năm Canh Tý (năm 40 SCN) tại địa điểm nào?',
-          options: ['Thành Cổ Loa', 'Thành Luy Lâu', 'Cửa sông Hát (Mê Linh)', 'Vùng Cấm Khê'],
-          correctAnswer: 2,
-          explanation: 'Hai Bà Trưng phất cờ khởi nghĩa tại cửa sông Hát (Mê Linh) vào mùa xuân năm Canh Tý (40 SCN), đây là nơi phát động cuộc khởi nghĩa đầu tiên.'
-        },
-        {
-          question: 'Sau khi đánh đuổi quân Đông Hán, Trưng Trắc xưng Vương và đóng đô ở đâu?',
-          options: ['Cổ Loa', 'Luy Lâu', 'Hát Môn', 'Mê Linh'],
-          correctAnswer: 3,
-          explanation: 'Sau khi đánh đuổi quân Đông Hán, Trưng Trắc xưng Vương và đóng đô ở Mê Linh, đây là quê hương của Hai Bà.'
-        },
-        {
-          question: 'Tướng nhà Hán nào được cử sang đàn áp cuộc khởi nghĩa Hai Bà Trưng?',
-          options: ['Tô Định', 'Lưu Long', 'Mã Viện', 'Đoàn Chí'],
-          correctAnswer: 2,
-          explanation: 'Mã Viện là một lão tướng dày dạn kinh nghiệm của nhà Hán, được cử mang 2 vạn quân sang đàn áp cuộc khởi nghĩa.'
-        },
-        {
-          question: 'Ý nghĩa lịch sử quan trọng nhất của cuộc khởi nghĩa Hai Bà Trưng là gì?',
-          options: [
-            'Chấm dứt hoàn toàn ách đô hộ của phong kiến phương Bắc.',
-            'Mở ra một thời kỳ phát triển rực rỡ của Nho giáo ở Việt Nam.',
-            'Là cuộc khởi nghĩa lớn đầu tiên, thể hiện ý chí độc lập và vai trò to lớn của phụ nữ.',
-            'Đánh dấu sự sụp đổ của chế độ Lạc tướng, Lạc hầu.'
-          ],
-          correctAnswer: 2,
-          explanation: 'Cuộc khởi nghĩa Hai Bà Trưng là cuộc nổi dậy lớn đầu tiên của nhân dân ta chống lại ách đô hộ phương Bắc, khẳng định mạnh mẽ ý chí độc lập, tự chủ và vai trò to lớn của người phụ nữ Việt Nam trong lịch sử đấu tranh của dân tộc.'
-        }
-      ],
-      rewards: {
-        experience: 500,
-        coins: 250
-      }
-    };
-
-    // Add the event to the service's events array
-    this.allEvents.push(haiBaTrungEvent);
-    
-    // Update the period's events array
-    const period = this.periods.find(p => p.id === 'period_1');
-    if (period) {
-      period.events.push(haiBaTrungEvent);
-    }
-  }
-}// Removed unused interface DataHistoricalPeriod
-// Removed unused interface DataQuiz 
-
+}
